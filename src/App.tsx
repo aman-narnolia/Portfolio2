@@ -74,7 +74,7 @@ interface CertificateItem {
   issuedOnText?: string;
   credentialId?: string;
   verifyUrl?: string;
-  type: 'infosys' | 'advitiya';
+  type: 'infosys' | 'advitiya' | 'arena';
   category: string;
   themeColor: string;
   description: string;
@@ -118,8 +118,7 @@ const projectsData: ProjectItem[] = [
       'MQ-2 / MQ-135 Gas Sensor (Detects Smoke, LPG, CO, and airborne pollutants)',
       'KY-037 High-Sensitivity Sound Sensor (Acoustic loudness mapped from 30 dB to 120 dB)',
       'ESP8266 Wi-Fi Module / ESP-01 (AT-command HTTP telemetry & Cloud Transmission)',
-      'I2C 16x2 LCD Display (Local instant visual readout of AQI ppm & noise dB)',
-      'Cirkit Designer Prototyping (Calibrated voltage dividers & schematic verification)'
+      'I2C 16x2 LCD Display (Local instant visual readout of AQI ppm & noise dB)'
     ],
     workflow: [
       { stage: '1. Multi-Sensor Sensing Stage', desc: 'Simultaneous analog voltage sampling of airborne gas concentration on pin A0 and acoustic microphone amplitude on pin A1.' },
@@ -133,7 +132,7 @@ const projectsData: ProjectItem[] = [
       'Wi-Fi-enabled cloud data streaming to ThingSpeak IoT dashboard using AT commands',
       'Automated hotspot identification for chronic urban noise and air pollution zones',
       'Dual-display architecture: local 16x2 I2C LCD plus remote web visualization',
-      'Cost-effective, highly portable embedded hardware schematic designed in Cirkit Designer'
+      'Cost-effective, highly portable embedded hardware schematic'
     ],
     techStack: [
       'Arduino Uno R3',
@@ -142,16 +141,29 @@ const projectsData: ProjectItem[] = [
       'MQ-2 & MQ-135 Sensors',
       'KY-037 Sound Module',
       'I2C 16x2 LCD',
-      'ThingSpeak IoT Cloud',
-      'Cirkit Designer'
+      'ThingSpeak IoT Cloud'
     ],
-    simulationUrl: 'https://app.cirkitdesigner.com/project/63704ef4-e460-44e3-9cec-53fbdcca568c',
     githubUrl: 'https://github.com/aman-narnolia',
-    liveUrl: 'https://app.cirkitdesigner.com/project/63704ef4-e460-44e3-9cec-53fbdcca568c'
+    liveUrl: '#'
   }
 ];
 
 const certificatesData: CertificateItem[] = [
+  {
+    id: 'cert-webathon',
+    title: 'WEB-A-THON 2.0 — Certificate of Participation',
+    issuer: 'ARENA (Lovely Professional University)',
+    date: 'February 13–14, 2026',
+    issuedOnText: 'February 13th to 14th, 2026',
+    credentialId: '8955ff95-6e99-4ca9-97ff-6dbdbc912917',
+    type: 'arena',
+    category: 'Hackathons & Competitions',
+    themeColor: '#0066FF',
+    description: 'Awarded for participating in "WEB-A-THON 2.0", a University-Level Hackathon organised by Student Organisation ARENA at Lovely Professional University Punjab, exhibiting outstanding performance in design, development, and strategic thinking.',
+    skills: ['Full-Stack Web Development', 'Hackathon Prototyping', 'UI/UX Design', 'Strategic Thinking', 'Team Collaboration'],
+    signatory: 'Shilpa Sharma (Faculty Facilitator) & Lakshya Agarwal (CEO ARENA)',
+    signatoryRole: 'Student Organisation ARENA, Lovely Professional University Punjab'
+  },
   {
     id: 'cert-python-1',
     title: 'Programming Fundamentals using Python - Part 1',
@@ -203,7 +215,7 @@ const certificatesData: CertificateItem[] = [
     issuer: "ADVITIYA'26 (BOST)",
     date: '2026',
     type: 'advitiya',
-    category: 'Competitions & Hackathons',
+    category: 'Hackathons & Competitions',
     themeColor: '#00E5FF',
     description: "Awarded in recognition of enthusiastic participation, active involvement, and demonstrating commitment, creativity, and positive spirit of learning in the AI FUSION event held under ADVITIYA'26.",
     skills: ['AI Innovation', 'Competitive Problem Solving', 'Technical Creativity', 'Team Collaboration'],
@@ -215,7 +227,7 @@ const certificatesData: CertificateItem[] = [
     issuer: "ADVITIYA'26 (BOST)",
     date: '2026',
     type: 'advitiya',
-    category: 'Competitions & Hackathons',
+    category: 'Hackathons & Competitions',
     themeColor: '#00E5FF',
     description: "Awarded for demonstrating creativity, active involvement, and passionate spirit of exploration in the AImagination event held under the national tech fest ADVITIYA'26.",
     skills: ['Generative AI Concepts', 'Creative Ideation', 'Design Thinking', 'Problem Formulation'],
@@ -498,6 +510,60 @@ const CertificateGraphic = ({ cert }: { cert: CertificateItem }) => {
     );
   }
 
+  if (cert.type === 'arena') {
+    return (
+      <div className="w-full h-full bg-[#07132B] flex flex-col justify-between p-4 relative border border-blue-500/40 select-none overflow-hidden shadow-inner group">
+        {/* Shimmer sweep */}
+        <div className="absolute inset-0 -translate-x-full group-hover:translate-x-full transition-transform duration-1000 bg-gradient-to-r from-transparent via-blue-400/15 to-transparent pointer-events-none" />
+
+        {/* Top Header with ARENA logo */}
+        <div className="flex justify-between items-center">
+          <div className="flex items-center space-x-1">
+            <span className="text-base font-black tracking-wider text-pink-500">A</span>
+            <span className="text-base font-black tracking-wider text-cyan-400">RENA</span>
+          </div>
+          <div className="w-6 h-6 rounded-full bg-amber-400/20 border border-amber-400 flex items-center justify-center text-amber-300 text-[10px] font-bold">
+            ★
+          </div>
+        </div>
+
+        {/* Center Details */}
+        <div className="text-center my-auto py-2">
+          <h5 className="text-xs font-bold tracking-widest text-white uppercase">
+            CERTIFICATE
+          </h5>
+          <p className="text-[7px] text-blue-200/80 tracking-widest uppercase mb-1">
+            OF PARTICIPATION
+          </p>
+          <p className="text-sm font-bold text-white tracking-wide my-0.5">
+            Aman Narnolia
+          </p>
+          <p className="text-[8px] text-blue-200/70 line-clamp-1">
+            For participating in <strong className="text-cyan-300">"WEB-A-THON 2.0"</strong>
+          </p>
+          <p className="text-[7px] text-blue-300/60 mt-0.5">
+            Organised by Student Organisation ARENA @ LPU
+          </p>
+        </div>
+
+        {/* Footer with Credential ID & Signatures */}
+        <div className="flex justify-between items-end text-[7px] text-blue-200/70 border-t border-blue-500/30 pt-1.5">
+          <div>
+            <p className="font-bold text-white">SHILPA SHARMA</p>
+            <p className="text-[6px] text-blue-300/60">FACULTY FACILITATOR</p>
+          </div>
+          <div className="text-[7px] font-mono text-cyan-300/80">
+            ID: 8955ff95...
+          </div>
+          <div className="text-right">
+            <p className="font-bold text-white">LAKSHYA AGARWAL</p>
+            <p className="text-[6px] text-blue-300/60">CEO ARENA</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   // ADVITIYA sci-fi graphic
   return (
     <div className="w-full h-full bg-[#050B14] flex flex-col justify-between p-4 relative border border-cyan-500/40 select-none overflow-hidden shadow-inner group">
@@ -563,7 +629,7 @@ const AnimatedSkillBadge = ({ name, icon }: { name: string; icon?: React.ReactNo
 export default function App() {
   const [activeProject, setActiveProject] = useState<ProjectItem | null>(null);
   const [activeCertificate, setActiveCertificate] = useState<CertificateItem | null>(null);
-  const [certFilter, setCertFilter] = useState<'all' | 'infosys' | 'advitiya'>('all');
+  const [certFilter, setCertFilter] = useState<'all' | 'infosys' | 'competitions'>('all');
   const [isCvOpen, setIsCvOpen] = useState(false);
   const [showScrollTop, setShowScrollTop] = useState(false);
 
@@ -579,7 +645,9 @@ export default function App() {
 
   const filteredCertificates = certificatesData.filter(cert => {
     if (certFilter === 'all') return true;
-    return cert.type === certFilter;
+    if (certFilter === 'infosys') return cert.type === 'infosys';
+    if (certFilter === 'competitions') return cert.type === 'advitiya' || cert.type === 'arena';
+    return true;
   });
 
   return (
@@ -712,7 +780,7 @@ export default function App() {
             </motion.div>
           </motion.div>
 
-          {/* Right Image Column - With Orbiting Floating Tech Badges */}
+          {/* Right Image Column - Clean and Elegant Profile Presentation */}
           <motion.div
             className="md:col-span-5 flex justify-center md:justify-end"
             initial={{ opacity: 0, scale: 0.9 }}
@@ -721,67 +789,20 @@ export default function App() {
           >
             <div className="relative w-64 sm:w-72 md:w-80">
               
-              {/* Floating Orbit Badge 1: Python */}
-              <motion.div
-                animate={{ y: [0, -10, 0], rotate: [0, 4, 0] }}
-                transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute -top-4 -left-6 z-20 px-3.5 py-1.5 bg-white/95 backdrop-blur-md rounded-2xl shadow-lg border border-stone-200 flex items-center space-x-1.5 text-xs font-bold text-natural"
-              >
-                <span className="text-base">🐍</span>
-                <span>Python</span>
-              </motion.div>
-
-              {/* Floating Orbit Badge 2: IoT & Sensors */}
-              <motion.div
-                animate={{ y: [0, 10, 0], rotate: [0, -4, 0] }}
-                transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-                className="absolute -bottom-4 -left-4 z-20 px-3.5 py-1.5 bg-white/95 backdrop-blur-md rounded-2xl shadow-lg border border-stone-200 flex items-center space-x-1.5 text-xs font-bold text-natural"
-              >
-                <span className="text-base">⚡</span>
-                <span>IoT & Arduino</span>
-              </motion.div>
-
-              {/* Floating Orbit Badge 3: React */}
-              <motion.div
-                animate={{ y: [0, -8, 0], rotate: [0, -3, 0] }}
-                transition={{ duration: 4.2, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                className="absolute -top-2 -right-4 z-20 px-3.5 py-1.5 bg-white/95 backdrop-blur-md rounded-2xl shadow-lg border border-stone-200 flex items-center space-x-1.5 text-xs font-bold text-natural"
-              >
-                <span className="text-base">⚛️</span>
-                <span>React & Web</span>
-              </motion.div>
-
-              {/* Floating Orbit Badge 4: C++ & DSA */}
-              <motion.div
-                animate={{ y: [0, 8, 0], rotate: [0, 3, 0] }}
-                transition={{ duration: 3.8, repeat: Infinity, ease: "easeInOut", delay: 1.5 }}
-                className="absolute -bottom-3 -right-6 z-20 px-3.5 py-1.5 bg-white/95 backdrop-blur-md rounded-2xl shadow-lg border border-stone-200 flex items-center space-x-1.5 text-xs font-bold text-natural"
-              >
-                <span className="text-base">🚀</span>
-                <span>C++ / DSA</span>
-              </motion.div>
-
               {/* Main Photo Card */}
-              <motion.div 
-                animate={{ y: [0, -6, 0] }}
-                transition={{ duration: 5, repeat: Infinity, ease: "easeInOut" }}
-                whileHover={{ scale: 1.02 }}
-                className="relative z-10 rounded-3xl overflow-hidden shadow-2xl bg-white p-2.5 border border-stone-200"
-              >
-                <div className="aspect-[4/5] bg-stone-100 rounded-2xl overflow-hidden relative group">
+              <div className="relative z-10 rounded-3xl overflow-hidden shadow-2xl bg-white p-2.5 border border-stone-200">
+                <div className="aspect-[3/4] bg-stone-100 rounded-2xl overflow-hidden relative">
                   <img 
                     src="/aman.png" 
                     alt="Aman Narnolia" 
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
+                    className="w-full h-full object-cover object-top" 
                     onError={(e) => {
                       (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1000&auto=format&fit=crop";
-                      (e.target as HTMLImageElement).classList.add('grayscale');
                     }}
                     referrerPolicy="no-referrer"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-stone-900/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                 </div>
-              </motion.div>
+              </div>
               
               {/* Subtle Decorative Accents */}
               <div className="absolute -top-3 -left-3 w-16 h-16 border-t-2 border-l-2 border-accent/40 rounded-tl-2xl -z-10" />
@@ -902,7 +923,7 @@ export default function App() {
                       viewport={{ once: true }}
                       className="flex flex-wrap gap-2.5"
                     >
-                      {['Git', 'GitHub', 'VS Code', 'Arduino Uno R3', 'ESP8266 IoT', 'Cirkit Designer'].map((skill) => (
+                      {['Git', 'GitHub', 'VS Code', 'Arduino Uno R3', 'ESP8266 IoT'].map((skill) => (
                         <AnimatedSkillBadge key={skill} name={skill} />
                       ))}
                     </motion.div>
@@ -1100,19 +1121,19 @@ export default function App() {
             <EducationCard 
               institution="Lovely Professional University"
               degree="Bachelor's in Computer Science and Engineering"
-              duration="2025 - Ongoing"
+              duration="Ongoing - 2029"
               location="Phagwara, Punjab"
               icon={<Briefcase className="text-accent" />}
-              status="2025 - Ongoing"
+              status="Ongoing - 2029"
             />
             {/* School */}
             <EducationCard 
               institution="Vinayak Convent Senior Secondary School"
               degree="Senior Secondary Schooling"
-              duration="2023"
+              duration="2024"
               location="Sikar, Rajasthan"
               icon={<BookOpen className="text-accent" />}
-              status="2023"
+              status="2024"
             />
           </div>
         </motion.div>
@@ -1152,10 +1173,10 @@ export default function App() {
                 Infosys Springboard (3)
               </button>
               <button
-                onClick={() => setCertFilter('advitiya')}
-                className={`px-4 py-1.5 text-xs font-bold rounded-xl transition-all cursor-pointer ${certFilter === 'advitiya' ? 'bg-cyan-900 text-cyan-200 shadow-xs' : 'text-stone-500 hover:text-cyan-700'}`}
+                onClick={() => setCertFilter('competitions')}
+                className={`px-4 py-1.5 text-xs font-bold rounded-xl transition-all cursor-pointer ${certFilter === 'competitions' ? 'bg-blue-900 text-blue-200 shadow-xs' : 'text-stone-500 hover:text-blue-700'}`}
               >
-                ADVITIYA'26 (2)
+                Hackathons & Tech Fests (3)
               </button>
             </div>
           </div>
@@ -1299,7 +1320,7 @@ export default function App() {
         </motion.div>
       </section>
 
-      {/* 7. CONTACT SECTION (With Phone Number Added) */}
+      {/* 7. CONTACT SECTION (With Updated Phone Number: 9653874118) */}
       <section id="contact" className="py-24 px-6 bg-stone-50/50">
         <motion.div 
           className="max-w-7xl mx-auto"
@@ -1320,8 +1341,8 @@ export default function App() {
               <ContactInfo 
                 icon={<Phone className="text-accent" />} 
                 label="Contact No." 
-                value="+91 98765 43210" 
-                href="tel:+919876543210" 
+                value="+91 96538 74118" 
+                href="tel:+919653874118" 
               />
             </motion.div>
 
@@ -1546,18 +1567,6 @@ export default function App() {
 
                 {/* Action Links */}
                 <div className="pt-4 border-t border-stone-100 flex flex-wrap gap-3">
-                  {activeProject.simulationUrl && (
-                    <a 
-                      href={activeProject.simulationUrl} 
-                      target="_blank" 
-                      rel="noreferrer" 
-                      className="px-5 py-2.5 bg-cyan-700 text-white rounded-xl text-xs font-bold uppercase tracking-wider hover:bg-cyan-800 transition-colors inline-flex items-center space-x-2 shadow-xs"
-                    >
-                      <CircuitBoard size={15} />
-                      <span>Cirkit Designer Schematic</span>
-                      <ExternalLink size={12} />
-                    </a>
-                  )}
                   {activeProject.githubUrl && (
                     <a 
                       href={activeProject.githubUrl} 
@@ -1577,7 +1586,7 @@ export default function App() {
                       className="px-5 py-2.5 bg-accent text-white rounded-xl text-xs font-bold uppercase tracking-wider hover:opacity-90 transition-colors inline-flex items-center space-x-2"
                     >
                       <ExternalLink size={15} />
-                      <span>Live Simulation / Demo</span>
+                      <span>Live Demo / Details</span>
                     </a>
                   )}
                 </div>
@@ -1639,6 +1648,11 @@ export default function App() {
                       <p className="text-accent text-sm font-semibold mt-0.5">
                         Issued by {activeCertificate.issuer} • {activeCertificate.issuedOnText || activeCertificate.date}
                       </p>
+                      {activeCertificate.credentialId && (
+                        <p className="text-xs text-stone-400 font-mono mt-1">
+                          Certificate ID: {activeCertificate.credentialId}
+                        </p>
+                      )}
                     </div>
 
                     {activeCertificate.verifyUrl && (
@@ -1765,7 +1779,7 @@ export default function App() {
                   <div className="flex flex-wrap justify-center gap-4 text-xs text-stone-500">
                     <span>📍 Jalandhar, Punjab / Sikar, Rajasthan</span>
                     <span>✉️ narnoliaaman07@gmail.com</span>
-                    <span>📞 +91 98765 43210</span>
+                    <span>📞 +91 96538 74118</span>
                     <span>🔗 linkedin.com/in/aman-narnolia-07aug06</span>
                   </div>
                 </div>
@@ -1793,7 +1807,7 @@ export default function App() {
                         <p className="text-xs text-stone-400">Phagwara, Punjab</p>
                       </div>
                       <span className="text-xs font-bold text-accent bg-accent/10 px-2.5 py-0.5 rounded-md">
-                        2025 - Ongoing
+                        Ongoing - 2029
                       </span>
                     </div>
 
@@ -1804,7 +1818,7 @@ export default function App() {
                         <p className="text-xs text-stone-400">Sikar, Rajasthan</p>
                       </div>
                       <span className="text-xs font-bold text-stone-500 bg-stone-100 px-2.5 py-0.5 rounded-md">
-                        2023
+                        2024
                       </span>
                     </div>
                   </div>
@@ -1830,7 +1844,7 @@ export default function App() {
                     </div>
                     <div>
                       <span className="font-bold text-natural block mb-1">Developer Tools & Hardware:</span>
-                      <p className="text-stone-600">Git, GitHub, VS Code, Arduino Uno R3, ESP8266 IoT, Cirkit Designer</p>
+                      <p className="text-stone-600">Git, GitHub, VS Code, Arduino Uno R3, ESP8266 IoT</p>
                     </div>
                   </div>
                 </div>
@@ -1869,6 +1883,7 @@ export default function App() {
                     Verified Certifications & Competitions
                   </h2>
                   <ul className="list-disc list-inside space-y-1.5 text-xs text-stone-600">
+                    <li><strong className="text-natural">WEB-A-THON 2.0 — Certificate of Participation</strong> – ARENA, Lovely Professional University (Feb 2026)</li>
                     <li><strong className="text-natural">Programming Fundamentals using Python - Part 1 & 2</strong> – Infosys Springboard (July 2026)</li>
                     <li><strong className="text-natural">Introduction to Artificial Intelligence</strong> – Infosys Springboard (March 2026)</li>
                     <li><strong className="text-natural">AI FUSION — Certificate of Participation</strong> – ADVITIYA'26 (BOST)</li>
