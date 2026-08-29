@@ -33,7 +33,15 @@ import {
   Network,
   Server,
   Database,
-  Eye
+  Eye,
+  QrCode,
+  ShieldCheck,
+  Zap,
+  Activity,
+  Wifi,
+  Radio,
+  Sliders,
+  CircuitBoard
 } from 'lucide-react';
 
 // --- Types ---
@@ -47,6 +55,10 @@ interface ProjectItem {
   fullDesc: string;
   features: string[];
   techStack: string[];
+  hardware?: string[];
+  workflow?: { stage: string; desc: string }[];
+  simulationUrl?: string;
+  team?: string;
   githubUrl?: string;
   liveUrl?: string;
 }
@@ -56,11 +68,16 @@ interface CertificateItem {
   title: string;
   issuer: string;
   date: string;
+  issuedOnText?: string;
   credentialId?: string;
+  verifyUrl?: string;
+  type: 'infosys' | 'advitiya';
   category: string;
-  image: string;
+  themeColor: string;
   description: string;
   skills: string[];
+  signatory?: string;
+  signatoryRole?: string;
 }
 
 // --- Data ---
@@ -86,69 +103,120 @@ const projectsData: ProjectItem[] = [
   },
   {
     id: 'pollution-monitor',
-    title: 'Smart Pollution Detection System',
-    subtitle: 'IoT Environmental Monitoring Solution',
+    title: 'Real-Time Noise & Air Quality Detection and Hotspot Mapping',
+    subtitle: 'IoT Environmental Telemetry & Urban Pollution Tracking System',
     image: '/ece.jpeg',
-    tags: ['IoT', 'Arduino', 'C/C++', 'Hardware Sensors'],
-    shortDesc: 'An IoT-based environmental monitor built with Arduino, MQ-135 gas sensor, and high-sensitivity noise detection modules.',
-    fullDesc: 'An embedded hardware-software prototype engineered to measure real-time environmental pollutants and noise levels. It utilizes microcontrollers coupled with MQ-135 air quality gas sensors and sound detection modules to provide instant telemetry and alert triggers when safety thresholds are breached.',
-    features: [
-      'Real-time air pollution sensing (CO2, Smoke, Ammonia, Benzene) via MQ-135',
-      'Acoustic noise monitoring using high-sensitivity sound microphone module',
-      'Microcontroller firmware coded in C/C++ for Arduino architecture',
-      'Automated visual/sound threshold alert system for hazardous conditions',
-      'Serial data output capability for environmental metric logging'
+    tags: ['IoT & Embedded', 'Arduino Uno R3', 'ESP8266 Wi-Fi', 'MQ-2 / MQ-135', 'ThingSpeak'],
+    shortDesc: 'A portable IoT environmental station built with Arduino Uno and ESP8266 to monitor air pollution (PPM) and acoustic noise (dB) in real-time with automated cloud hotspot telemetry.',
+    fullDesc: 'Rapid urbanization and industrialization have led to significant increases in noise and air pollution, impacting urban health and ecosystems. Traditional monitoring systems are often bulky, stationary, expensive, and rely on delayed batch processing. This project, developed at Lovely Professional University, introduces a low-cost, portable, real-time IoT node capable of detecting hazardous gas pollutants (MQ-2 / MQ-135) and ambient noise levels (KY-037), displaying live metrics on an I2C LCD, and streaming telemetry packets via ESP8266 Wi-Fi to a cloud dashboard (ThingSpeak) for geographic pollution hotspot mapping.',
+    team: 'Aman Narnolia, Shriank, Jay, Pritam — Lovely Professional University',
+    hardware: [
+      'Arduino Uno R3 (Main Controller for ADC signal sampling & processing)',
+      'MQ-2 / MQ-135 Gas Sensor (Detects Smoke, LPG, CO, and airborne pollutants)',
+      'KY-037 High-Sensitivity Sound Sensor (Acoustic loudness mapped from 30 dB to 120 dB)',
+      'ESP8266 Wi-Fi Module / ESP-01 (AT-command HTTP telemetry & Cloud Transmission)',
+      'I2C 16x2 LCD Display (Local instant visual readout of AQI ppm & noise dB)',
+      'Cirkit Designer Prototyping (Calibrated voltage dividers & schematic verification)'
     ],
-    techStack: ['Arduino', 'C / C++', 'MQ-135 Gas Sensor', 'Sound Sensor Module', 'Embedded Electronics'],
+    workflow: [
+      { stage: '1. Multi-Sensor Sensing Stage', desc: 'Simultaneous analog voltage sampling of airborne gas concentration on pin A0 and acoustic microphone amplitude on pin A1.' },
+      { stage: '2. Signal Processing & Mapping', desc: 'Arduino microcontroller maps raw ADC levels (0–1023) into calibrated Air Quality Index (0–500 PPM proxy) and acoustic sound range (30–120 dB).' },
+      { stage: '3. Local Real-Time Display', desc: 'I2C 16x2 LCD display provides immediate on-device telemetry (AQ: xxx ppm, Noise: xx dB, WiFi Status).' },
+      { stage: '4. ESP8266 Wi-Fi Transmission', desc: 'Arduino communicates via SoftwareSerial (Pins 10/11) to dispatch AT-command HTTP GET telemetry packets to ThingSpeak cloud every 20s.' },
+      { stage: '5. Hotspot Visualization & Analytics', desc: 'Cloud dashboard plots live time-series graphs and flags continuous high-exposure zones (>85 dB) for automated urban hotspot mapping.' }
+    ],
+    features: [
+      'Simultaneous dual-parameter environmental sensing (Air Quality PPM & Noise dB)',
+      'Wi-Fi-enabled cloud data streaming to ThingSpeak IoT dashboard using AT commands',
+      'Automated hotspot identification for chronic urban noise and air pollution zones',
+      'Dual-display architecture: local 16x2 I2C LCD plus remote web visualization',
+      'Cost-effective, highly portable embedded hardware schematic designed in Cirkit Designer'
+    ],
+    techStack: [
+      'Arduino Uno R3',
+      'Embedded C / C++',
+      'ESP8266 Wi-Fi (ESP-01)',
+      'MQ-2 & MQ-135 Sensors',
+      'KY-037 Sound Module',
+      'I2C 16x2 LCD',
+      'ThingSpeak IoT Cloud',
+      'Cirkit Designer'
+    ],
+    simulationUrl: 'https://app.cirkitdesigner.com/project/63704ef4-e460-44e3-9cec-53fbdcca568c',
     githubUrl: 'https://github.com/aman-narnolia',
-    liveUrl: '#'
+    liveUrl: 'https://app.cirkitdesigner.com/project/63704ef4-e460-44e3-9cec-53fbdcca568c'
   }
 ];
 
 const certificatesData: CertificateItem[] = [
   {
-    id: 'cert-python',
-    title: 'Certification in Python',
-    issuer: 'Professional Training & Academic Certification',
-    date: 'February 2026',
-    credentialId: 'PY-2026-8849',
+    id: 'cert-python-1',
+    title: 'Programming Fundamentals using Python - Part 1',
+    issuer: 'Infosys Springboard',
+    date: 'July 18, 2026',
+    issuedOnText: 'Saturday, July 18, 2026',
+    verifyUrl: 'https://verify.onwingspan.com',
+    type: 'infosys',
     category: 'Programming & Logic',
-    image: 'https://images.unsplash.com/photo-1526379095098-d400fd0bf935?q=80&w=1000&auto=format&fit=crop',
-    description: 'Comprehensive certification covering Python core fundamentals, object-oriented programming, data structures, algorithms, and file handling.',
-    skills: ['Python 3', 'Data Structures', 'OOP', 'Algorithm Design', 'Scripting']
+    themeColor: '#007cc3',
+    description: 'Awarded by Infosys Springboard for successfully mastering fundamental Python programming, basic syntax, control structures, loops, functions, and core computational problem-solving logic.',
+    skills: ['Python Fundamentals', 'Control Flow & Loops', 'Functions & Modularity', 'Problem Solving Logic'],
+    signatory: 'Satheesha B. Nanjappa',
+    signatoryRole: 'Senior Vice President & Head, Education, Training and Assessment, Infosys Limited'
   },
   {
-    id: 'cert-ai',
-    title: 'Certification in Artificial Intelligence',
-    issuer: 'Advanced Tech Program',
-    date: 'March 2026',
-    credentialId: 'AI-2026-4102',
-    category: 'Emerging Tech',
-    image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?q=80&w=1000&auto=format&fit=crop',
-    description: 'Focused training on the foundations of artificial intelligence, search algorithms, problem-solving heuristics, neural networks, and modern AI paradigms.',
-    skills: ['AI Concepts', 'Search Algorithms', 'Foundations of ML', 'Logic & Reasoning']
+    id: 'cert-python-2',
+    title: 'Programming Fundamentals using Python - Part 2',
+    issuer: 'Infosys Springboard',
+    date: 'July 19, 2026',
+    issuedOnText: 'Sunday, July 19, 2026',
+    verifyUrl: 'https://verify.onwingspan.com',
+    type: 'infosys',
+    category: 'Programming & Logic',
+    themeColor: '#007cc3',
+    description: 'Advanced Python certification covering Object-Oriented Programming (OOP) paradigms, classes, objects, exception handling, data structures (lists, tuples, sets, dictionaries), and file handling.',
+    skills: ['Python OOP', 'Classes & Objects', 'Exception Handling', 'Complex Data Structures', 'File Handling'],
+    signatory: 'Satheesha B. Nanjappa',
+    signatoryRole: 'Senior Vice President & Head, Education, Training and Assessment, Infosys Limited'
   },
   {
-    id: 'cert-web',
-    title: 'Web Technologies & Frontend',
-    issuer: 'Academic Course Certification',
-    date: 'December 2025',
-    credentialId: 'WEB-2025-9321',
-    category: 'Frontend Engineering',
-    image: 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?q=80&w=1000&auto=format&fit=crop',
-    description: 'Mastery in building responsive, accessible web layouts using modern semantic HTML5, CSS3, DOM manipulation, and responsive web principles.',
-    skills: ['HTML5', 'CSS3', 'JavaScript DOM', 'Responsive Design', 'Web Standards']
+    id: 'cert-ai-intro',
+    title: 'Introduction to Artificial Intelligence',
+    issuer: 'Infosys Springboard',
+    date: 'March 24, 2026',
+    issuedOnText: 'Tuesday, March 24, 2026',
+    verifyUrl: 'https://verify.onwingspan.com',
+    type: 'infosys',
+    category: 'Emerging Tech & AI',
+    themeColor: '#007cc3',
+    description: 'Comprehensive certification by Infosys Springboard exploring the foundations of Artificial Intelligence, search heuristics, knowledge representation, neural network basics, and intelligent agents.',
+    skills: ['AI Core Concepts', 'Search Heuristics', 'Neural Network Basics', 'Intelligent Systems', 'ML Foundations'],
+    signatory: 'Satheesha B. Nanjappa',
+    signatoryRole: 'Senior Vice President & Head, Education, Training and Assessment, Infosys Limited'
   },
   {
-    id: 'cert-iot',
-    title: 'Basic Electronics & IoT Workshop',
-    issuer: 'Hardware & Systems Practical Lab',
-    date: 'November 2025',
-    credentialId: 'IOT-2025-1044',
-    category: 'Hardware & IoT',
-    image: 'https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1000&auto=format&fit=crop',
-    description: 'Hands-on hardware certification covering electronic components, circuit design, sensor interfacing, microcontrollers, and IoT architectures.',
-    skills: ['Arduino', 'Circuit Design', 'Sensor Interfacing', 'Digital Logic', 'Microcontrollers']
+    id: 'cert-ai-fusion',
+    title: 'AI FUSION — Certificate of Participation',
+    issuer: "ADVITIYA'26 (BOST)",
+    date: '2026',
+    type: 'advitiya',
+    category: 'Competitions & Hackathons',
+    themeColor: '#00E5FF',
+    description: "Awarded in recognition of enthusiastic participation, active involvement, and demonstrating commitment, creativity, and positive spirit of learning in the AI FUSION event held under ADVITIYA'26.",
+    skills: ['AI Innovation', 'Competitive Problem Solving', 'Technical Creativity', 'Team Collaboration'],
+    signatory: 'Faculty Advisor, BOST & Overall Coordinators'
+  },
+  {
+    id: 'cert-aimagination',
+    title: 'AImagination — Certificate of Participation',
+    issuer: "ADVITIYA'26 (BOST)",
+    date: '2026',
+    type: 'advitiya',
+    category: 'Competitions & Hackathons',
+    themeColor: '#00E5FF',
+    description: "Awarded for demonstrating creativity, active involvement, and passionate spirit of exploration in the AImagination event held under the national tech fest ADVITIYA'26.",
+    skills: ['Generative AI Concepts', 'Creative Ideation', 'Design Thinking', 'Problem Formulation'],
+    signatory: 'Faculty Advisor, BOST & Overall Coordinators'
   }
 ];
 
@@ -231,7 +299,7 @@ const Navbar = ({ onOpenCv }: { onOpenCv: () => void }) => {
         </div>
 
         {/* Mobile Toggle */}
-        <button className="md:hidden text-gray-700" onClick={() => setIsOpen(!isOpen)}>
+        <button className="md:hidden text-gray-700 cursor-pointer" onClick={() => setIsOpen(!isOpen)}>
           {isOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
@@ -258,7 +326,7 @@ const Navbar = ({ onOpenCv }: { onOpenCv: () => void }) => {
               ))}
               <button
                 onClick={() => { setIsOpen(false); onOpenCv(); }}
-                className="w-full py-2.5 bg-accent text-white rounded-xl text-sm font-bold uppercase tracking-wider flex items-center justify-center space-x-2"
+                className="w-full py-2.5 bg-accent text-white rounded-xl text-sm font-bold uppercase tracking-wider flex items-center justify-center space-x-2 cursor-pointer"
               >
                 <FileText size={16} />
                 <span>View Full CV</span>
@@ -327,11 +395,104 @@ const TypingEffect = ({ texts }: { texts: string[] }) => {
   );
 };
 
+// --- Custom Certificate Graphic Component ---
+const CertificateGraphic = ({ cert }: { cert: CertificateItem }) => {
+  if (cert.type === 'infosys') {
+    return (
+      <div className="w-full h-full bg-white flex flex-col justify-between p-4 relative border border-stone-200 select-none overflow-hidden">
+        {/* Top Header */}
+        <div className="flex justify-between items-start">
+          <div className="flex items-center space-x-1.5">
+            <span className="text-[#007cc3] font-black tracking-tight text-lg">Infosys</span>
+            <span className="text-[9px] text-stone-500 font-bold tracking-wider">Navigate your next</span>
+          </div>
+          <span className="text-[8px] uppercase tracking-widest text-[#007cc3] font-bold bg-blue-50 px-2 py-0.5 rounded border border-blue-100">
+            Course Completion
+          </span>
+        </div>
+
+        {/* Center Content */}
+        <div className="text-center my-auto py-2">
+          <p className="text-[9px] uppercase tracking-widest text-stone-400 font-bold mb-1">
+            COURSE COMPLETION CERTIFICATE
+          </p>
+          <p className="text-[10px] text-stone-500">The certificate is awarded to</p>
+          <p className="text-sm font-bold text-[#007cc3] tracking-wide my-0.5">
+            aman narnolia
+          </p>
+          <p className="text-[9px] text-stone-500">for successfully completing the course</p>
+          <p className="text-xs font-bold text-stone-800 line-clamp-1 mt-0.5">
+            {cert.title}
+          </p>
+          <p className="text-[9px] text-stone-400 mt-1">on {cert.date}</p>
+        </div>
+
+        {/* Bottom Banner */}
+        <div className="flex justify-between items-end pt-2 border-t border-stone-100">
+          <div className="flex items-center space-x-1">
+            <span className="text-[10px] font-black text-[#007cc3]">Infosys</span>
+            <span className="text-[9px] font-bold text-orange-500">| Springboard</span>
+          </div>
+          <div className="flex items-center space-x-1 text-[8px] text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded border border-emerald-200">
+            <ShieldCheck size={10} />
+            <span>Verified Credential</span>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ADVITIYA sci-fi graphic
+  return (
+    <div className="w-full h-full bg-[#050B14] flex flex-col justify-between p-4 relative border border-cyan-500/40 select-none overflow-hidden shadow-inner">
+      {/* Sci-Fi glowing accents */}
+      <div className="absolute top-0 left-0 w-8 h-8 border-t-2 border-l-2 border-cyan-400" />
+      <div className="absolute top-0 right-0 w-8 h-8 border-t-2 border-r-2 border-cyan-400" />
+      <div className="absolute bottom-0 left-0 w-8 h-8 border-b-2 border-l-2 border-cyan-400" />
+      <div className="absolute bottom-0 right-0 w-8 h-8 border-b-2 border-r-2 border-cyan-400" />
+
+      {/* Header */}
+      <div className="text-center pt-1">
+        <h5 className="text-sm font-black tracking-widest text-cyan-300 uppercase drop-shadow-[0_0_8px_rgba(0,229,255,0.6)]">
+          ADVITIYA'26
+        </h5>
+        <p className="text-[8px] tracking-widest text-cyan-400/80 font-mono uppercase">
+          CERTIFICATE OF PARTICIPATION
+        </p>
+      </div>
+
+      {/* Center Details */}
+      <div className="text-center my-auto py-2">
+        <p className="text-[9px] text-cyan-200/60 font-mono">Proudly presented to</p>
+        <p className="text-sm font-bold text-white tracking-wide my-0.5 font-serif">
+          Aman Narnolia
+        </p>
+        <p className="text-[9px] text-cyan-200/70">for active participation in the event</p>
+        <div className="inline-block px-3 py-1 my-1 bg-cyan-950/80 border border-cyan-400/60 rounded text-xs font-bold text-cyan-300 font-mono">
+          {cert.title.split('—')[0].trim()}
+        </div>
+      </div>
+
+      {/* Footer */}
+      <div className="flex justify-between items-center text-[8px] text-cyan-400/70 font-mono pt-2 border-t border-cyan-500/30">
+        <span>FACULTY ADVISOR, BOST</span>
+        <span>OVERALL COORDINATORS</span>
+      </div>
+    </div>
+  );
+};
+
 // --- Main App Component ---
 export default function App() {
   const [activeProject, setActiveProject] = useState<ProjectItem | null>(null);
   const [activeCertificate, setActiveCertificate] = useState<CertificateItem | null>(null);
+  const [certFilter, setCertFilter] = useState<'all' | 'infosys' | 'advitiya'>('all');
   const [isCvOpen, setIsCvOpen] = useState(false);
+
+  const filteredCertificates = certificatesData.filter(cert => {
+    if (certFilter === 'all') return true;
+    return cert.type === certFilter;
+  });
 
   return (
     <div className="font-sans text-natural bg-background-natural min-h-screen selection:bg-accent/20 selection:text-accent">
@@ -394,7 +555,8 @@ export default function App() {
               <TypingEffect texts={[
                 "An Aspiring Software Engineer",
                 "Computer Science Undergraduate @ LPU",
-                "Web Developer & IoT Explorer"
+                "IoT & Embedded Systems Explorer",
+                "Full Stack Web Developer"
               ]} />
             </motion.div>
 
@@ -406,7 +568,7 @@ export default function App() {
               }}
               className="text-stone-600 text-base md:text-lg mb-8 max-w-xl leading-relaxed"
             >
-              Hello! I am a <span className="text-natural font-semibold">Computer Science & Engineering student</span> at Lovely Professional University, originally from Sikar, Rajasthan. Passionate about coding and technology, I focus on building responsive web solutions, exploring IoT integrations, and solving real-world challenges through continuous learning.
+              Hello! I am a <span className="text-natural font-semibold">Computer Science & Engineering student</span> at Lovely Professional University, originally from Sikar, Rajasthan. Passionate about coding and technology, I focus on building responsive web solutions, engineering IoT environmental prototypes, and solving real-world challenges through continuous learning.
             </motion.p>
 
             {/* Action Buttons: Explore Work & CV Modal */}
@@ -421,7 +583,7 @@ export default function App() {
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 href="#projects" 
-                className="px-7 py-3 bg-accent text-white rounded-full font-semibold shadow-sm hover:opacity-90 transition-all flex items-center space-x-2"
+                className="px-7 py-3 bg-accent text-white rounded-full font-semibold shadow-sm hover:opacity-90 transition-all flex items-center space-x-2 cursor-pointer"
               >
                 <span>Explore My Work</span>
                 <ChevronRight size={18} />
@@ -562,7 +724,7 @@ export default function App() {
                       <span>Developer Tools & Hardware</span>
                     </div>
                     <div className="flex flex-wrap gap-2">
-                      {['Git', 'GitHub', 'VS Code', 'Arduino / IoT Sensors'].map((skill) => (
+                      {['Git', 'GitHub', 'VS Code', 'Arduino Uno R3', 'ESP8266 IoT', 'Cirkit Designer'].map((skill) => (
                         <span key={skill} className="px-3.5 py-1.5 bg-white border border-stone-200 text-natural text-sm font-semibold rounded-xl shadow-2xs">
                           {skill}
                         </span>
@@ -573,7 +735,7 @@ export default function App() {
               </div>
 
               <div className="mt-8 pt-4 border-t border-stone-200/60 text-xs text-stone-400 italic">
-                ✓ Built course projects, labs, and academic assignments with these tools.
+                ✓ Built academic IoT prototypes, embedded systems, and full web applications.
               </div>
             </motion.div>
 
@@ -759,7 +921,7 @@ export default function App() {
         </motion.div>
       </section>
 
-      {/* 5. CERTIFICATES SECTION (4 IN A ROW) */}
+      {/* 5. CERTIFICATES SECTION (ACCURATE & VERIFIED CREDENTIALS) */}
       <section id="certificates" className="py-24 px-6 bg-stone-50/50">
         <motion.div 
           className="max-w-7xl mx-auto"
@@ -768,61 +930,88 @@ export default function App() {
           viewport={{ once: true, margin: "-50px" }}
           transition={{ duration: 0.8 }}
         >
-          <div className="flex flex-col md:flex-row md:items-end justify-between mb-12">
+          <div className="flex flex-col md:flex-row md:items-end justify-between mb-8">
             <div>
               <h2 className="text-xs uppercase tracking-[0.2em] font-bold text-stone-400 mb-3">
-                Certifications
+                Certifications & Achievements
               </h2>
               <p className="text-2xl md:text-3xl font-display font-bold text-natural">
-                Verified Credentials & Learning Badges
+                Verified Credentials & Hackathons
               </p>
             </div>
-            <p className="text-xs text-stone-500 font-medium mt-2 md:mt-0">
-              Click any certificate card to preview full document
-            </p>
+            
+            {/* Category Filter Tabs */}
+            <div className="flex items-center space-x-2 mt-4 md:mt-0 bg-stone-200/60 p-1.5 rounded-2xl">
+              <button
+                onClick={() => setCertFilter('all')}
+                className={`px-3.5 py-1.5 text-xs font-bold rounded-xl transition-all cursor-pointer ${certFilter === 'all' ? 'bg-white text-natural shadow-xs' : 'text-stone-500 hover:text-natural'}`}
+              >
+                All ({certificatesData.length})
+              </button>
+              <button
+                onClick={() => setCertFilter('infosys')}
+                className={`px-3.5 py-1.5 text-xs font-bold rounded-xl transition-all cursor-pointer ${certFilter === 'infosys' ? 'bg-[#007cc3] text-white shadow-xs' : 'text-stone-500 hover:text-[#007cc3]'}`}
+              >
+                Infosys Springboard (3)
+              </button>
+              <button
+                onClick={() => setCertFilter('advitiya')}
+                className={`px-3.5 py-1.5 text-xs font-bold rounded-xl transition-all cursor-pointer ${certFilter === 'advitiya' ? 'bg-cyan-900 text-cyan-200 shadow-xs' : 'text-stone-500 hover:text-cyan-700'}`}
+              >
+                ADVITIYA'26 (2)
+              </button>
+            </div>
           </div>
 
-          {/* 4 in a row desktop grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {certificatesData.map((cert) => (
+          {/* Certificate Cards Grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredCertificates.map((cert) => (
               <motion.div
                 key={cert.id}
-                whileHover={{ y: -6, boxShadow: "0 12px 30px -10px rgba(0,0,0,0.08)" }}
+                layout
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                whileHover={{ y: -6, boxShadow: "0 16px 32px -12px rgba(0,0,0,0.1)" }}
                 onClick={() => setActiveCertificate(cert)}
-                className="bg-white rounded-2xl border border-stone-200/80 overflow-hidden shadow-2xs cursor-pointer group transition-all flex flex-col"
+                className="bg-white rounded-3xl border border-stone-200/90 overflow-hidden shadow-2xs cursor-pointer group transition-all flex flex-col"
               >
-                {/* Thumbnail Preview Banner */}
-                <div className="relative aspect-[16/10] bg-stone-100 overflow-hidden border-b border-stone-100">
-                  <img 
-                    src={cert.image} 
-                    alt={cert.title} 
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
-                  />
-                  <div className="absolute inset-0 bg-stone-900/10 group-hover:bg-accent/20 transition-colors flex items-center justify-center">
-                    <span className="opacity-0 group-hover:opacity-100 transition-opacity bg-white/90 text-natural text-xs font-bold px-3 py-1.5 rounded-full shadow-sm flex items-center space-x-1">
-                      <Eye size={13} />
-                      <span>Preview</span>
+                {/* Visual Certificate Graphic Preview */}
+                <div className="relative aspect-[16/10] overflow-hidden border-b border-stone-200">
+                  <CertificateGraphic cert={cert} />
+                  
+                  {/* Hover Overlay */}
+                  <div className="absolute inset-0 bg-stone-950/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center backdrop-blur-2xs">
+                    <span className="bg-white text-natural text-xs font-bold px-4 py-2 rounded-full shadow-lg flex items-center space-x-1.5 transform translate-y-2 group-hover:translate-y-0 transition-transform">
+                      <Eye size={14} className="text-accent" />
+                      <span>Click to View Full Certificate</span>
                     </span>
                   </div>
-                  <span className="absolute top-2.5 right-2.5 px-2.5 py-0.5 bg-white/90 backdrop-blur-xs text-[10px] font-bold uppercase tracking-wider text-accent rounded-md shadow-2xs">
-                    {cert.date}
-                  </span>
                 </div>
 
-                {/* Card Info */}
-                <div className="p-5 flex-1 flex flex-col justify-between">
+                {/* Card Information */}
+                <div className="p-6 flex-1 flex flex-col justify-between">
                   <div>
-                    <h4 className="font-display font-bold text-natural text-base group-hover:text-accent transition-colors line-clamp-2 mb-1.5">
+                    <div className="flex items-center justify-between text-[11px] font-bold text-stone-400 uppercase tracking-wider mb-2">
+                      <span>{cert.issuer}</span>
+                      <span className="text-accent">{cert.date}</span>
+                    </div>
+
+                    <h4 className="font-display font-bold text-natural text-base group-hover:text-accent transition-colors mb-2 line-clamp-2">
                       {cert.title}
                     </h4>
-                    <p className="text-xs text-stone-500 font-medium mb-3">
-                      {cert.issuer}
+
+                    <p className="text-stone-500 text-xs leading-relaxed line-clamp-2 mb-4">
+                      {cert.description}
                     </p>
                   </div>
 
                   <div className="pt-3 border-t border-stone-100 flex items-center justify-between text-xs text-accent font-semibold">
-                    <span>View Certificate</span>
-                    <ChevronRight size={14} className="group-hover:translate-x-1 transition-transform" />
+                    <span className="flex items-center space-x-1">
+                      <ShieldCheck size={14} />
+                      <span>Verified Document</span>
+                    </span>
+                    <ChevronRight size={15} className="group-hover:translate-x-1 transition-transform" />
                   </div>
                 </div>
               </motion.div>
@@ -831,7 +1020,7 @@ export default function App() {
         </motion.div>
       </section>
 
-      {/* 6. PROJECTS (CLICKABLE DETAIL MODALS) */}
+      {/* 6. PROJECTS (CLICKABLE DETAIL MODALS & FULL SPECS) */}
       <section id="projects" className="py-24 px-6 bg-white border-y border-stone-200/50">
         <motion.div 
           className="max-w-7xl mx-auto"
@@ -846,11 +1035,11 @@ export default function App() {
                 Featured Projects
               </h2>
               <p className="text-2xl md:text-3xl font-display font-bold text-natural">
-                Real-World Applications & Prototypes
+                Real-World Applications & IoT Prototypes
               </p>
             </div>
             <p className="text-xs text-stone-500 font-medium mt-2 md:mt-0">
-              Click any project to view architecture, features & links
+              Click any project card to view complete specifications, architecture & schematics
             </p>
           </div>
 
@@ -875,7 +1064,7 @@ export default function App() {
                   <div className="absolute inset-0 bg-stone-900/10 group-hover:bg-accent/15 transition-colors flex items-center justify-center">
                     <span className="opacity-0 group-hover:opacity-100 transition-opacity bg-white/95 text-natural text-xs font-bold px-4 py-2 rounded-full shadow-md flex items-center space-x-1.5">
                       <Eye size={14} />
-                      <span>View Details</span>
+                      <span>View Specifications</span>
                     </span>
                   </div>
                 </div>
@@ -903,7 +1092,7 @@ export default function App() {
                   </div>
 
                   <div className="pt-4 border-t border-stone-100 flex items-center justify-between text-xs text-accent font-bold uppercase tracking-wider">
-                    <span>Click for full specifications</span>
+                    <span>Click for circuit, workflow & architecture</span>
                     <ExternalLink size={14} />
                   </div>
                 </div>
@@ -1001,7 +1190,7 @@ export default function App() {
         </div>
       </footer>
 
-      {/* --- MODAL 1: PROJECT DETAILS MODAL --- */}
+      {/* --- MODAL 1: ENRICHED PROJECT DETAILS MODAL --- */}
       <AnimatePresence>
         {activeProject && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
@@ -1011,7 +1200,7 @@ export default function App() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setActiveProject(null)}
-              className="fixed inset-0 bg-stone-900/60 backdrop-blur-xs"
+              className="fixed inset-0 bg-stone-900/70 backdrop-blur-xs"
             />
 
             {/* Modal Card */}
@@ -1019,10 +1208,10 @@ export default function App() {
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl overflow-hidden z-10 my-8 max-h-[90vh] flex flex-col"
+              className="relative w-full max-w-3xl bg-white rounded-3xl shadow-2xl overflow-hidden z-10 my-8 max-h-[92vh] flex flex-col"
             >
-              {/* Header Image */}
-              <div className="relative aspect-[16/8] bg-stone-100 overflow-hidden shrink-0">
+              {/* Header Image / Banner */}
+              <div className="relative aspect-[16/7] bg-stone-100 overflow-hidden shrink-0">
                 <img 
                   src={activeProject.image} 
                   alt={activeProject.title} 
@@ -1036,7 +1225,7 @@ export default function App() {
                 </button>
               </div>
 
-              {/* Body */}
+              {/* Body Content */}
               <div className="p-6 sm:p-8 overflow-y-auto space-y-6">
                 <div>
                   <div className="flex flex-wrap gap-2 mb-2">
@@ -1049,20 +1238,67 @@ export default function App() {
                   <h3 className="text-2xl sm:text-3xl font-display font-bold text-natural">
                     {activeProject.title}
                   </h3>
-                  <p className="text-stone-500 text-sm font-medium">
+                  <p className="text-stone-500 text-sm font-medium mt-1">
                     {activeProject.subtitle}
                   </p>
+                  {activeProject.team && (
+                    <div className="mt-2 text-xs font-semibold text-accent flex items-center space-x-1.5">
+                      <Users size={14} />
+                      <span>{activeProject.team}</span>
+                    </div>
+                  )}
                 </div>
 
-                {/* Full Description */}
+                {/* Full Description & Abstract */}
                 <div>
                   <h4 className="text-xs uppercase tracking-wider font-bold text-stone-400 mb-2">
-                    Project Overview
+                    Project Overview & Abstract
                   </h4>
                   <p className="text-stone-600 text-sm sm:text-base leading-relaxed">
                     {activeProject.fullDesc}
                   </p>
                 </div>
+
+                {/* 5-Stage System Workflow (if available) */}
+                {activeProject.workflow && (
+                  <div>
+                    <h4 className="text-xs uppercase tracking-wider font-bold text-stone-400 mb-3 flex items-center space-x-1.5">
+                      <Sliders size={14} className="text-accent" />
+                      <span>System Architecture & Workflow Pipeline</span>
+                    </h4>
+                    <div className="space-y-3 bg-stone-50 p-4 rounded-2xl border border-stone-200">
+                      {activeProject.workflow.map((item, i) => (
+                        <div key={i} className="flex items-start text-xs sm:text-sm">
+                          <div className="w-5 h-5 rounded-full bg-accent text-white font-bold flex items-center justify-center shrink-0 mr-3 mt-0.5 text-[10px]">
+                            {i + 1}
+                          </div>
+                          <div>
+                            <strong className="text-natural block">{item.stage}</strong>
+                            <span className="text-stone-600">{item.desc}</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {/* Hardware Components / BOM (if available) */}
+                {activeProject.hardware && (
+                  <div>
+                    <h4 className="text-xs uppercase tracking-wider font-bold text-stone-400 mb-3 flex items-center space-x-1.5">
+                      <CircuitBoard size={14} className="text-accent" />
+                      <span>Hardware Components & Pinout Connections</span>
+                    </h4>
+                    <ul className="grid sm:grid-cols-2 gap-2 text-xs text-stone-600 bg-stone-50 p-4 rounded-2xl border border-stone-200">
+                      {activeProject.hardware.map((hw, i) => (
+                        <li key={i} className="flex items-start">
+                          <Cpu size={13} className="text-accent mr-2 shrink-0 mt-0.5" />
+                          <span>{hw}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
 
                 {/* Key Features */}
                 <div>
@@ -1082,7 +1318,7 @@ export default function App() {
                 {/* Tech Stack Badges */}
                 <div>
                   <h4 className="text-xs uppercase tracking-wider font-bold text-stone-400 mb-3">
-                    Technologies & Architecture
+                    Technologies & Tools Used
                   </h4>
                   <div className="flex flex-wrap gap-2">
                     {activeProject.techStack.map((tech) => (
@@ -1095,6 +1331,18 @@ export default function App() {
 
                 {/* Action Links */}
                 <div className="pt-4 border-t border-stone-100 flex flex-wrap gap-3">
+                  {activeProject.simulationUrl && (
+                    <a 
+                      href={activeProject.simulationUrl} 
+                      target="_blank" 
+                      rel="noreferrer" 
+                      className="px-5 py-2.5 bg-cyan-700 text-white rounded-xl text-xs font-bold uppercase tracking-wider hover:bg-cyan-800 transition-colors inline-flex items-center space-x-2 shadow-xs"
+                    >
+                      <CircuitBoard size={15} />
+                      <span>Cirkit Designer Schematic</span>
+                      <ExternalLink size={12} />
+                    </a>
+                  )}
                   {activeProject.githubUrl && (
                     <a 
                       href={activeProject.githubUrl} 
@@ -1114,7 +1362,7 @@ export default function App() {
                       className="px-5 py-2.5 bg-accent text-white rounded-xl text-xs font-bold uppercase tracking-wider hover:opacity-90 transition-colors inline-flex items-center space-x-2"
                     >
                       <ExternalLink size={15} />
-                      <span>Live Preview</span>
+                      <span>Live Simulation / Demo</span>
                     </a>
                   )}
                 </div>
@@ -1124,7 +1372,7 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      {/* --- MODAL 2: CERTIFICATE PREVIEW MODAL --- */}
+      {/* --- MODAL 2: FULL CERTIFICATE PREVIEW MODAL --- */}
       <AnimatePresence>
         {activeCertificate && (
           <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
@@ -1133,75 +1381,102 @@ export default function App() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setActiveCertificate(null)}
-              className="fixed inset-0 bg-stone-900/60 backdrop-blur-xs"
+              className="fixed inset-0 bg-stone-900/70 backdrop-blur-xs"
             />
 
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="relative w-full max-w-xl bg-white rounded-3xl shadow-2xl overflow-hidden z-10 my-8 flex flex-col"
+              className="relative w-full max-w-2xl bg-white rounded-3xl shadow-2xl overflow-hidden z-10 my-8 flex flex-col max-h-[92vh]"
             >
-              {/* Certificate Image / Skeleton Preview */}
-              <div className="relative aspect-[16/10] bg-stone-100 overflow-hidden border-b border-stone-200">
-                <img 
-                  src={activeCertificate.image} 
-                  alt={activeCertificate.title} 
-                  className="w-full h-full object-cover"
-                />
+              {/* Top Bar with Close button */}
+              <div className="px-6 py-4 bg-stone-50 border-b border-stone-200 flex items-center justify-between">
+                <div className="flex items-center space-x-2">
+                  <Award size={18} className="text-accent" />
+                  <span className="text-xs font-bold uppercase tracking-wider text-natural">
+                    Official Credential Document
+                  </span>
+                </div>
                 <button
                   onClick={() => setActiveCertificate(null)}
-                  className="absolute top-4 right-4 w-9 h-9 bg-stone-900/70 hover:bg-stone-900 text-white rounded-full flex items-center justify-center transition-all cursor-pointer"
+                  className="w-8 h-8 bg-stone-200 hover:bg-stone-300 text-stone-700 rounded-full flex items-center justify-center transition-all cursor-pointer"
                 >
-                  <X size={18} />
+                  <X size={16} />
                 </button>
-                <div className="absolute bottom-3 left-3 px-3 py-1 bg-stone-900/80 backdrop-blur-xs text-white text-xs font-semibold rounded-lg">
-                  {activeCertificate.category}
-                </div>
               </div>
 
-              {/* Certificate Details */}
-              <div className="p-6 sm:p-8 space-y-6">
-                <div>
-                  <h3 className="text-2xl font-display font-bold text-natural mb-1">
-                    {activeCertificate.title}
-                  </h3>
-                  <p className="text-accent text-sm font-semibold">
-                    {activeCertificate.issuer} • {activeCertificate.date}
-                  </p>
-                  {activeCertificate.credentialId && (
-                    <p className="text-xs text-stone-400 font-mono mt-1">
-                      Credential ID: {activeCertificate.credentialId}
-                    </p>
-                  )}
+              {/* Certificate Canvas / Render Frame */}
+              <div className="p-6 sm:p-8 overflow-y-auto space-y-6">
+                
+                {/* High Fidelity Certificate Viewer */}
+                <div className="aspect-[16/10] w-full rounded-2xl overflow-hidden shadow-md">
+                  <CertificateGraphic cert={activeCertificate} />
                 </div>
 
-                <div>
-                  <h4 className="text-xs uppercase tracking-wider font-bold text-stone-400 mb-2">
-                    Credential Scope
-                  </h4>
-                  <p className="text-stone-600 text-sm leading-relaxed">
-                    {activeCertificate.description}
-                  </p>
-                </div>
+                {/* Certificate Meta Details */}
+                <div className="space-y-4">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between pb-4 border-b border-stone-100 gap-2">
+                    <div>
+                      <h3 className="text-xl sm:text-2xl font-display font-bold text-natural">
+                        {activeCertificate.title}
+                      </h3>
+                      <p className="text-accent text-sm font-semibold mt-0.5">
+                        Issued by {activeCertificate.issuer} • {activeCertificate.issuedOnText || activeCertificate.date}
+                      </p>
+                    </div>
 
-                <div>
-                  <h4 className="text-xs uppercase tracking-wider font-bold text-stone-400 mb-2.5">
-                    Skills Validated
-                  </h4>
-                  <div className="flex flex-wrap gap-1.5">
-                    {activeCertificate.skills.map((s) => (
-                      <span key={s} className="px-2.5 py-1 bg-stone-100 text-natural text-xs font-semibold rounded-md border border-stone-200">
-                        {s}
-                      </span>
-                    ))}
+                    {activeCertificate.verifyUrl && (
+                      <a
+                        href={activeCertificate.verifyUrl}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="px-4 py-2 bg-[#007cc3] text-white text-xs font-bold rounded-xl flex items-center space-x-1.5 hover:bg-[#00629b] transition-colors shrink-0 shadow-xs cursor-pointer"
+                      >
+                        <QrCode size={14} />
+                        <span>Verify Credential</span>
+                        <ExternalLink size={12} />
+                      </a>
+                    )}
                   </div>
+
+                  {/* Description */}
+                  <div>
+                    <h4 className="text-xs uppercase tracking-wider font-bold text-stone-400 mb-1.5">
+                      Credential Description
+                    </h4>
+                    <p className="text-stone-600 text-sm leading-relaxed">
+                      {activeCertificate.description}
+                    </p>
+                  </div>
+
+                  {/* Skills Validated */}
+                  <div>
+                    <h4 className="text-xs uppercase tracking-wider font-bold text-stone-400 mb-2">
+                      Key Competencies & Validated Skills
+                    </h4>
+                    <div className="flex flex-wrap gap-1.5">
+                      {activeCertificate.skills.map((s) => (
+                        <span key={s} className="px-3 py-1 bg-stone-100 text-natural text-xs font-semibold rounded-lg border border-stone-200">
+                          {s}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Signatory */}
+                  {activeCertificate.signatory && (
+                    <div className="pt-3 border-t border-stone-100 text-xs text-stone-500">
+                      <span className="font-bold text-stone-700">Authorized Signatory:</span> {activeCertificate.signatory}
+                      {activeCertificate.signatoryRole && <span className="block text-[11px] text-stone-400">{activeCertificate.signatoryRole}</span>}
+                    </div>
+                  )}
                 </div>
 
                 <div className="pt-4 border-t border-stone-100 flex justify-end">
                   <button
                     onClick={() => setActiveCertificate(null)}
-                    className="px-6 py-2 bg-accent text-white rounded-xl text-xs font-bold uppercase tracking-wider cursor-pointer"
+                    className="px-6 py-2.5 bg-accent text-white rounded-xl text-xs font-bold uppercase tracking-wider hover:opacity-90 cursor-pointer"
                   >
                     Close Preview
                   </button>
@@ -1261,7 +1536,7 @@ export default function App() {
                 </div>
               </div>
 
-              {/* CV Document Skeleton Body */}
+              {/* CV Document Body */}
               <div className="p-8 overflow-y-auto space-y-8 text-stone-700 bg-white font-sans text-sm">
                 
                 {/* CV Header */}
@@ -1340,7 +1615,7 @@ export default function App() {
                     </div>
                     <div>
                       <span className="font-bold text-natural block mb-1">Developer Tools & Hardware:</span>
-                      <p className="text-stone-600">Git, GitHub, VS Code, Arduino, IoT Sensors</p>
+                      <p className="text-stone-600">Git, GitHub, VS Code, Arduino Uno R3, ESP8266 IoT, Cirkit Designer</p>
                     </div>
                   </div>
                 </div>
@@ -1353,36 +1628,36 @@ export default function App() {
                   <div className="space-y-4">
                     <div>
                       <div className="flex justify-between items-center mb-1">
-                        <h3 className="font-bold text-natural">NGO Donation Platform (Helping Connect)</h3>
-                        <span className="text-xs text-stone-400">React, TypeScript, Tailwind</span>
+                        <h3 className="font-bold text-natural">Real-Time Noise & Air Quality Detection and Hotspot Mapping</h3>
+                        <span className="text-xs text-stone-400">Arduino, C++, ESP8266 Wi-Fi, ThingSpeak</span>
                       </div>
                       <p className="text-xs text-stone-600 leading-relaxed">
-                        Built a full-featured web platform connecting donors with underprivileged communities and NGOs. Features item donation logging, category-based request feeds, and multi-tier user access.
+                        Engineered a portable IoT environmental station using Arduino Uno, MQ-2 gas sensor, and KY-037 sound sensor. Implemented non-linear ADC calibration, local 16x2 I2C LCD readout, and AT-command Wi-Fi telemetry streaming to ThingSpeak cloud for automated urban pollution hotspot identification.
                       </p>
                     </div>
 
                     <div>
                       <div className="flex justify-between items-center mb-1">
-                        <h3 className="font-bold text-natural">Smart Pollution Detection System</h3>
-                        <span className="text-xs text-stone-400">Arduino, C++, IoT Sensors</span>
+                        <h3 className="font-bold text-natural">NGO Donation Platform (Helping Connect)</h3>
+                        <span className="text-xs text-stone-400">React, TypeScript, Tailwind, DBMS</span>
                       </div>
                       <p className="text-xs text-stone-600 leading-relaxed">
-                        Engineered an IoT prototype using Arduino, MQ-135 air quality sensor, and microphone sound sensors to monitor environmental metrics and sound alarms during hazardous conditions.
+                        Built a full-featured web platform connecting donors with underprivileged communities and NGOs. Features item donation logging, category-based request feeds, and multi-tier user access.
                       </p>
                     </div>
                   </div>
                 </div>
 
-                {/* Certifications */}
+                {/* Verified Certifications */}
                 <div>
                   <h2 className="text-xs uppercase tracking-widest font-bold text-accent mb-3 pb-1 border-b border-stone-200">
-                    Certifications & Achievements
+                    Verified Certifications & Competitions
                   </h2>
-                  <ul className="list-disc list-inside space-y-1 text-xs text-stone-600">
-                    <li><strong className="text-natural">Certification in Python</strong> – Feb 2026</li>
-                    <li><strong className="text-natural">Certification in Artificial Intelligence</strong> – Mar 2026</li>
-                    <li><strong className="text-natural">Web Technologies & Frontend Development</strong> – Dec 2025</li>
-                    <li><strong className="text-natural">Basic Electronics & IoT Systems Workshop</strong> – Nov 2025</li>
+                  <ul className="list-disc list-inside space-y-1.5 text-xs text-stone-600">
+                    <li><strong className="text-natural">Programming Fundamentals using Python - Part 1 & 2</strong> – Infosys Springboard (July 2026)</li>
+                    <li><strong className="text-natural">Introduction to Artificial Intelligence</strong> – Infosys Springboard (March 2026)</li>
+                    <li><strong className="text-natural">AI FUSION — Certificate of Participation</strong> – ADVITIYA'26 (BOST)</li>
+                    <li><strong className="text-natural">AImagination — Certificate of Participation</strong> – ADVITIYA'26 (BOST)</li>
                   </ul>
                 </div>
 
