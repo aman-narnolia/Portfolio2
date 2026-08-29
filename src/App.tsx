@@ -631,6 +631,7 @@ export default function App() {
   const [activeCertificate, setActiveCertificate] = useState<CertificateItem | null>(null);
   const [certFilter, setCertFilter] = useState<'all' | 'infosys' | 'competitions'>('all');
   const [isCvOpen, setIsCvOpen] = useState(false);
+  const [cvViewMode, setCvViewMode] = useState<'interactive' | 'pdf'>('interactive');
   const [showScrollTop, setShowScrollTop] = useState(false);
 
   useEffect(() => {
@@ -1320,7 +1321,7 @@ export default function App() {
         </motion.div>
       </section>
 
-      {/* 7. CONTACT SECTION (With Updated Phone Number: 9653874118) */}
+      {/* 7. CONTACT SECTION (With Phone Number: 9653874118) */}
       <section id="contact" className="py-24 px-6 bg-stone-50/50">
         <motion.div 
           className="max-w-7xl mx-auto"
@@ -1716,181 +1717,247 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      {/* --- MODAL 3: CV / RESUME VIEWER MODAL --- */}
+      {/* --- MODAL 3: EXACT CV / RESUME VIEWER MODAL (MATCHING NEW RESUME FORMAT) --- */}
       <AnimatePresence>
         {isCvOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 overflow-y-auto">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 overflow-y-auto">
             <motion.div 
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsCvOpen(false)}
-              className="fixed inset-0 bg-stone-900/60 backdrop-blur-xs"
+              className="fixed inset-0 bg-stone-950/70 backdrop-blur-xs"
             />
 
             <motion.div
               initial={{ opacity: 0, scale: 0.95, y: 20 }}
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
-              className="relative w-full max-w-3xl bg-white rounded-3xl shadow-2xl overflow-hidden z-10 my-6 max-h-[90vh] flex flex-col"
+              className="relative w-full max-w-4xl bg-white rounded-3xl shadow-2xl overflow-hidden z-10 my-4 max-h-[94vh] flex flex-col"
             >
-              {/* CV Modal Header */}
-              <div className="px-8 py-5 bg-stone-50 border-b border-stone-200 flex items-center justify-between shrink-0">
+              {/* CV Modal Top Navigation & Download Bar */}
+              <div className="px-6 py-4 bg-stone-900 text-white flex items-center justify-between shrink-0">
                 <div className="flex items-center space-x-3">
-                  <div className="p-2 bg-accent/10 text-accent rounded-xl">
-                    <FileText size={20} />
+                  <div className="p-2 bg-accent/20 text-accent rounded-xl">
+                    <FileText size={18} />
                   </div>
                   <div>
-                    <h3 className="font-display font-bold text-natural text-lg">
+                    <h3 className="font-display font-bold text-white text-base sm:text-lg">
                       Curriculum Vitae (CV)
                     </h3>
-                    <p className="text-xs text-stone-500">Aman Narnolia • B.Tech CSE</p>
+                    <p className="text-[11px] text-stone-400">Aman Narnolia • CSE Student</p>
                   </div>
                 </div>
 
-                <div className="flex items-center space-x-3">
-                  <button
-                    onClick={() => window.print()}
-                    className="px-4 py-2 bg-accent text-white rounded-xl text-xs font-bold flex items-center space-x-1.5 hover:opacity-90 transition-all cursor-pointer shadow-xs"
+                <div className="flex items-center space-x-2 sm:space-x-3">
+                  {/* Toggle between Clean Resume View and Direct PDF view */}
+                  <div className="hidden sm:flex bg-stone-800 p-1 rounded-xl text-xs font-semibold">
+                    <button
+                      onClick={() => setCvViewMode('interactive')}
+                      className={`px-3 py-1.5 rounded-lg transition-colors cursor-pointer ${cvViewMode === 'interactive' ? 'bg-accent text-white' : 'text-stone-400 hover:text-white'}`}
+                    >
+                      Document View
+                    </button>
+                    <button
+                      onClick={() => setCvViewMode('pdf')}
+                      className={`px-3 py-1.5 rounded-lg transition-colors cursor-pointer ${cvViewMode === 'pdf' ? 'bg-accent text-white' : 'text-stone-400 hover:text-white'}`}
+                    >
+                      PDF File
+                    </button>
+                  </div>
+
+                  {/* Direct PDF Download Button */}
+                  <a
+                    href="/cv.pdf"
+                    download="Aman_Narnolia_CV.pdf"
+                    className="px-4 py-2 bg-accent hover:bg-stone-800 text-white rounded-xl text-xs font-bold flex items-center space-x-1.5 transition-all cursor-pointer shadow-xs"
                   >
                     <Download size={14} />
-                    <span>Download / Print</span>
-                  </button>
+                    <span>Download PDF</span>
+                  </a>
+
                   <button
                     onClick={() => setIsCvOpen(false)}
-                    className="w-8 h-8 rounded-full bg-stone-200 hover:bg-stone-300 text-stone-700 flex items-center justify-center transition-colors cursor-pointer"
+                    className="w-8 h-8 rounded-full bg-stone-800 hover:bg-stone-700 text-stone-300 hover:text-white flex items-center justify-center transition-colors cursor-pointer"
                   >
                     <X size={16} />
                   </button>
                 </div>
               </div>
 
-              {/* CV Document Body */}
-              <div className="p-8 overflow-y-auto space-y-8 text-stone-700 bg-white font-sans text-sm">
-                
-                {/* CV Header */}
-                <div className="text-center pb-6 border-b border-stone-200">
-                  <h1 className="text-3xl font-display font-bold text-natural mb-1">
-                    AMAN NARNOLIA
-                  </h1>
-                  <p className="text-accent font-semibold text-sm mb-3">
-                    Computer Science Undergraduate | Software Engineering Enthusiast
-                  </p>
-                  <div className="flex flex-wrap justify-center gap-4 text-xs text-stone-500">
-                    <span>📍 Jalandhar, Punjab / Sikar, Rajasthan</span>
-                    <span>✉️ narnoliaaman07@gmail.com</span>
-                    <span>📞 +91 96538 74118</span>
-                    <span>🔗 linkedin.com/in/aman-narnolia-07aug06</span>
+              {/* CV Body Frame */}
+              <div className="p-4 sm:p-8 overflow-y-auto bg-stone-100 flex-1">
+                {cvViewMode === 'pdf' ? (
+                  <div className="w-full h-[72vh] bg-white rounded-2xl overflow-hidden shadow-inner border border-stone-300">
+                    <iframe
+                      src="/cv.pdf#toolbar=1"
+                      title="Aman Narnolia CV PDF"
+                      className="w-full h-full border-0"
+                    />
                   </div>
-                </div>
+                ) : (
+                  /* Exact 2-Column High Fidelity Layout of the Uploaded Resume */
+                  <div className="max-w-3xl mx-auto bg-white p-6 sm:p-10 shadow-xl rounded-2xl border border-stone-200/80 font-sans text-stone-800">
+                    
+                    <div className="grid grid-cols-1 md:grid-cols-12 gap-8 sm:gap-10">
+                      
+                      {/* LEFT COLUMN: Photo, Contact, Skills, MOOC Certificates */}
+                      <div className="md:col-span-4 flex flex-col space-y-7 md:border-r md:border-stone-200 md:pr-6">
+                        
+                        {/* Circular Headshot Photo */}
+                        <div className="flex justify-center md:justify-start">
+                          <div className="w-32 h-32 sm:w-36 sm:h-36 rounded-full overflow-hidden border-4 border-stone-100 shadow-md bg-stone-50">
+                            <img 
+                              src="/aman.png" 
+                              alt="Aman Narnolia" 
+                              className="w-full h-full object-cover object-top"
+                            />
+                          </div>
+                        </div>
 
-                {/* Summary */}
-                <div>
-                  <h2 className="text-xs uppercase tracking-widest font-bold text-accent mb-2 pb-1 border-b border-stone-200">
-                    Professional Summary
-                  </h2>
-                  <p className="text-stone-600 leading-relaxed text-xs sm:text-sm">
-                    First-year Computer Science and Engineering undergraduate at Lovely Professional University with strong foundations in Python, C, JavaScript, and Web Development. Passionate about building impactful software, exploring IoT solutions, and applying structured problem-solving skills to real-world engineering projects.
-                  </p>
-                </div>
+                        {/* Contact Section */}
+                        <div>
+                          <h3 className="text-lg font-bold font-display text-black mb-3 tracking-tight">
+                            Contact
+                          </h3>
+                          <div className="space-y-2.5 text-xs text-stone-700">
+                            <div className="flex items-start space-x-2">
+                              <Mail size={14} className="text-stone-800 mt-0.5 shrink-0" />
+                              <a href="mailto:narnoliaaman07@gmail.com" className="hover:underline break-all">
+                                narnoliaaman07@gmail.com
+                              </a>
+                            </div>
+                            <div className="flex items-start space-x-2">
+                              <Linkedin size={14} className="text-stone-800 mt-0.5 shrink-0" />
+                              <a href="https://www.linkedin.com/in/aman-narnolia-07aug06/" target="_blank" rel="noreferrer" className="hover:underline break-all">
+                                linkedin.com/in/aman-narnolia-07aug06/
+                              </a>
+                            </div>
+                            <div className="flex items-start space-x-2">
+                              <Github size={14} className="text-stone-800 mt-0.5 shrink-0" />
+                              <a href="https://github.com/aman-narnolia" target="_blank" rel="noreferrer" className="hover:underline break-all">
+                                github.com/aman-narnolia
+                              </a>
+                            </div>
+                            <div className="flex items-center space-x-2">
+                              <Phone size={14} className="text-stone-800 shrink-0" />
+                              <a href="tel:+919653874118" className="hover:underline font-semibold">
+                                9653874118
+                              </a>
+                            </div>
+                          </div>
+                        </div>
 
-                {/* Education */}
-                <div>
-                  <h2 className="text-xs uppercase tracking-widest font-bold text-accent mb-3 pb-1 border-b border-stone-200">
-                    Education
-                  </h2>
-                  <div className="space-y-4">
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <h3 className="font-bold text-natural">Lovely Professional University</h3>
-                        <p className="text-xs text-stone-600">Bachelor of Technology (B.Tech) - Computer Science & Engineering</p>
-                        <p className="text-xs text-stone-400">Phagwara, Punjab</p>
+                        {/* Skills Section */}
+                        <div>
+                          <h3 className="text-lg font-bold font-display text-black mb-3 tracking-tight">
+                            Skills
+                          </h3>
+                          <ul className="space-y-1.5 text-xs text-stone-700">
+                            <li className="font-semibold text-stone-900">Python, C, C++</li>
+                            <li className="font-semibold text-stone-900">DSA</li>
+                            <li className="font-semibold text-stone-900">HTML, CSS, Javascript</li>
+                            <li className="font-semibold text-stone-900">DBMS, Virtualization</li>
+                            <li>Analytical Thinking</li>
+                            <li>Adaptability</li>
+                            <li>Team Collaboration</li>
+                          </ul>
+                        </div>
+
+                        {/* MOOC Certificates Section */}
+                        <div>
+                          <h3 className="text-lg font-bold font-display text-black mb-2 tracking-tight leading-snug">
+                            MOOC Certificates
+                          </h3>
+                          <ul className="space-y-2 text-xs text-stone-700 list-disc list-inside">
+                            <li>Introduction to Python 1, 2</li>
+                            <li>Introduction to Artificial Intelligence</li>
+                            <li>Healthy Habits for Healthy Life</li>
+                          </ul>
+                        </div>
+
                       </div>
-                      <span className="text-xs font-bold text-accent bg-accent/10 px-2.5 py-0.5 rounded-md">
-                        Ongoing - 2029
-                      </span>
+
+                      {/* RIGHT COLUMN: Header, About Me, Experience, Career Objective, Education */}
+                      <div className="md:col-span-8 space-y-6">
+                        
+                        {/* Main Title Banner */}
+                        <div className="pb-4 border-b-2 border-black">
+                          <h1 className="text-3xl sm:text-4xl font-bold font-display text-black tracking-tight uppercase">
+                            Aman Narnolia
+                          </h1>
+                          <p className="text-base sm:text-lg text-stone-800 font-semibold tracking-wider uppercase mt-1">
+                            CSE STUDENT
+                          </p>
+                        </div>
+
+                        {/* About me */}
+                        <div>
+                          <h3 className="text-lg font-bold font-display text-black mb-2 tracking-tight">
+                            About me
+                          </h3>
+                          <p className="text-xs sm:text-sm text-stone-700 leading-relaxed">
+                            Aspiring CSE student with experience in hackathons, and self-driven projects. Passionate about learning new things and building efficient, user-focused solutions.
+                          </p>
+                        </div>
+
+                        {/* Experience */}
+                        <div>
+                          <h3 className="text-lg font-bold font-display text-black mb-2 tracking-tight">
+                            Experience
+                          </h3>
+                          <div className="space-y-1.5">
+                            <h4 className="text-xs sm:text-sm font-bold text-stone-900">
+                              Project-Based Experience
+                            </h4>
+                            <ul className="space-y-1.5 text-xs text-stone-700 list-disc list-outside ml-4 leading-relaxed">
+                              <li>Designed and developed responsive web applications using HTML, CSS, and JavaScript</li>
+                              <li>Built intuitive, user-centric interfaces with a focus on usability and cross-device compatibility</li>
+                              <li>Participated in multiple hackathons, demonstrating strong problem-solving, teamwork, and rapid prototyping skills.</li>
+                              <li>Applied structured problem-solving and debugging techniques to optimize performance and functionality</li>
+                            </ul>
+                          </div>
+                        </div>
+
+                        {/* CAREER OBJECTIVE */}
+                        <div>
+                          <h3 className="text-lg font-bold font-display text-black mb-2 tracking-tight uppercase">
+                            CAREER OBJECTIVE
+                          </h3>
+                          <p className="text-xs sm:text-sm text-stone-700 leading-relaxed pl-3 border-l-2 border-stone-300 italic">
+                            To build a career as a Software Developer by leveraging my knowledge of web technologies and problem-solving skills to develop scalable, high-quality applications, while growing into a proficient and impactful engineer.
+                          </p>
+                        </div>
+
+                        {/* Education */}
+                        <div>
+                          <h3 className="text-lg font-bold font-display text-black mb-3 tracking-tight">
+                            Education
+                          </h3>
+                          <div className="space-y-4 text-xs sm:text-sm text-stone-700">
+                            {/* University */}
+                            <div>
+                              <p className="font-bold text-stone-900">• Lovely Professional University</p>
+                              <p className="pl-3 text-xs text-stone-600">• Bachelor Of Technology</p>
+                              <p className="pl-3 text-xs text-stone-600">• Computer Science & Engineering</p>
+                            </div>
+
+                            {/* School */}
+                            <div>
+                              <p className="font-bold text-stone-900">• Vinayak Convent Sr. Sec. School</p>
+                              <p className="pl-3 text-xs text-stone-600 leading-relaxed">
+                                • Completed schooling in 2024 Strong academic performance with consistent participation in school activities.
+                              </p>
+                            </div>
+                          </div>
+                        </div>
+
+                      </div>
+
                     </div>
 
-                    <div className="flex justify-between items-start">
-                      <div>
-                        <h3 className="font-bold text-natural">Vinayak Convent Senior Secondary School</h3>
-                        <p className="text-xs text-stone-600">Senior Secondary Education</p>
-                        <p className="text-xs text-stone-400">Sikar, Rajasthan</p>
-                      </div>
-                      <span className="text-xs font-bold text-stone-500 bg-stone-100 px-2.5 py-0.5 rounded-md">
-                        2024
-                      </span>
-                    </div>
                   </div>
-                </div>
-
-                {/* Technical Skills */}
-                <div>
-                  <h2 className="text-xs uppercase tracking-widest font-bold text-accent mb-3 pb-1 border-b border-stone-200">
-                    Technical Skills
-                  </h2>
-                  <div className="grid sm:grid-cols-2 gap-4 text-xs">
-                    <div>
-                      <span className="font-bold text-natural block mb-1">Languages:</span>
-                      <p className="text-stone-600">Python, C, JavaScript, C++ (Learning)</p>
-                    </div>
-                    <div>
-                      <span className="font-bold text-natural block mb-1">Frontend & Web:</span>
-                      <p className="text-stone-600">HTML5, CSS3, JavaScript DOM, React</p>
-                    </div>
-                    <div>
-                      <span className="font-bold text-natural block mb-1">Databases & Systems:</span>
-                      <p className="text-stone-600">DBMS (Relational Databases), Virtualization (Learning)</p>
-                    </div>
-                    <div>
-                      <span className="font-bold text-natural block mb-1">Developer Tools & Hardware:</span>
-                      <p className="text-stone-600">Git, GitHub, VS Code, Arduino Uno R3, ESP8266 IoT</p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Projects */}
-                <div>
-                  <h2 className="text-xs uppercase tracking-widest font-bold text-accent mb-3 pb-1 border-b border-stone-200">
-                    Key Projects
-                  </h2>
-                  <div className="space-y-4">
-                    <div>
-                      <div className="flex justify-between items-center mb-1">
-                        <h3 className="font-bold text-natural">Real-Time Noise & Air Quality Detection and Hotspot Mapping</h3>
-                        <span className="text-xs text-stone-400">Arduino, C++, ESP8266 Wi-Fi, ThingSpeak</span>
-                      </div>
-                      <p className="text-xs text-stone-600 leading-relaxed">
-                        Engineered a portable IoT environmental station using Arduino Uno, MQ-2 gas sensor, and KY-037 sound sensor. Implemented non-linear ADC calibration, local 16x2 I2C LCD readout, and AT-command Wi-Fi telemetry streaming to ThingSpeak cloud for automated urban pollution hotspot identification.
-                      </p>
-                    </div>
-
-                    <div>
-                      <div className="flex justify-between items-center mb-1">
-                        <h3 className="font-bold text-natural">NGO Donation Platform (Helping Connect)</h3>
-                        <span className="text-xs text-stone-400">React, TypeScript, Tailwind, DBMS</span>
-                      </div>
-                      <p className="text-xs text-stone-600 leading-relaxed">
-                        Built a full-featured web platform connecting donors with underprivileged communities and NGOs. Features item donation logging, category-based request feeds, and multi-tier user access.
-                      </p>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Verified Certifications */}
-                <div>
-                  <h2 className="text-xs uppercase tracking-widest font-bold text-accent mb-3 pb-1 border-b border-stone-200">
-                    Verified Certifications & Competitions
-                  </h2>
-                  <ul className="list-disc list-inside space-y-1.5 text-xs text-stone-600">
-                    <li><strong className="text-natural">WEB-A-THON 2.0 — Certificate of Participation</strong> – ARENA, Lovely Professional University (Feb 2026)</li>
-                    <li><strong className="text-natural">Programming Fundamentals using Python - Part 1 & 2</strong> – Infosys Springboard (July 2026)</li>
-                    <li><strong className="text-natural">Introduction to Artificial Intelligence</strong> – Infosys Springboard (March 2026)</li>
-                    <li><strong className="text-natural">AI FUSION — Certificate of Participation</strong> – ADVITIYA'26 (BOST)</li>
-                    <li><strong className="text-natural">AImagination — Certificate of Participation</strong> – ADVITIYA'26 (BOST)</li>
-                  </ul>
-                </div>
-
+                )}
               </div>
             </motion.div>
           </div>
