@@ -53,6 +53,7 @@ interface ProjectItem {
   title: string;
   subtitle: string;
   image: string;
+  gallery?: string[];
   tags: string[];
   shortDesc: string;
   fullDesc: string;
@@ -87,28 +88,29 @@ interface CertificateItem {
 const projectsData: ProjectItem[] = [
   {
     id: 'ngo-platform',
-    title: 'Helping Hands — Direct Community Aid & NGO Donation Platform',
-    subtitle: 'Full-Stack Multi-Role Donation & Real-Time Logistics Tracking System',
-    image: 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=1000&auto=format&fit=crop',
-    tags: ['React', 'TypeScript', 'Tailwind CSS', 'DBMS', 'Node.js', 'REST API'],
-    shortDesc: 'A web platform bridging the gap between donors, verified NGOs, and underprivileged communities with transparent item donation matching and delivery tracking.',
-    fullDesc: 'Traditional charitable donation workflows frequently suffer from a lack of transparency, high administrative friction, and the presence of unverified intermediaries that diminish donor trust. Helping Hands is a centralized full-stack donation management web platform engineered to connect donors directly with verified grassroots NGOs and individuals in need. The system implements multi-role RBAC (Role-Based Access Control) for Donors, NGOs, Beneficiaries, and Administrators, enabling real-time essential item requests (food grains, clothes, educational stationery, medical supplies), direct item pledging, logistics milestone tracking, and transparent DBMS ledger logging.',
+    title: 'Helping Connect — Closed-Loop Relief & Surplus Food Matching Network',
+    subtitle: "India's Dedicated Closed-Loop Relief & Surplus Food Matching Network",
+    image: '/helping-connect-hero.png',
+    gallery: ['/helping-connect-hero.png', '/helping-connect-features.png'],
+    tags: ['React', 'TypeScript', 'Tailwind CSS', 'Socket.IO', 'Node.js / Express', 'DBMS'],
+    shortDesc: 'A transparent, real-time closed-loop network connecting needy individuals, generous donors, and hotels/messes with verified NGOs to eliminate food waste and deliver emergency relief directly.',
+    fullDesc: "Helping Connect is India's dedicated closed-loop relief and surplus food matching platform engineered to eliminate commercial food waste and streamline emergency relief. The system establishes a verified, transparent ecosystem connecting Needy Individuals, Generous Donors, Hotels/Messes, and 100% Vetted NGOs. Featuring real-time Socket.IO chat for instant vehicle gate coordination, automated surplus batch scheduling, push broadcasts, fair allocation bidding, and photographic delivery verification, Helping Connect ensures 100% accountability from donor to beneficiary.",
     workflow: [
-      { stage: '1. Multi-Tier Role Authentication', desc: 'Secure sign-in with distinct role portals: Donors, Verified NGOs, Needy Individuals, and System Administrators.' },
-      { stage: '2. Needs Requirement Posting', desc: 'Beneficiaries and local NGOs publish structured requirement listings with item categories, urgency levels (Urgent / Standard), and geographic location.' },
-      { stage: '3. Direct Donor Matching & Pledging', desc: 'Donors browse live request feeds, filter by category/location, and pledge items directly without financial cuts or middlemen.' },
-      { stage: '4. Real-Time Logistics & Fulfillment Status', desc: 'Step-by-step milestone progression tracking from "Pledged" ➔ "Collected by NGO" ➔ "In Transit" ➔ "Delivered to Beneficiary".' },
-      { stage: '5. Transparent DBMS Audit Logging', desc: 'Immutable transaction logs, verification proofs, and donor impact badges recorded to maintain 100% community trust.' }
+      { stage: '1. Multi-Portal Access & Strict Vetting', desc: 'Distinct role portals for Donors, Hotels/Messes, Needy Individuals, and 100% Vetted NGOs audited with strict 80G certificates and government registrations.' },
+      { stage: '2. Surplus Food & Relief Listing Engine', desc: 'Hotels and banquets schedule automated recurring food rescue collections, while communities publish emergency medical and relief requests.' },
+      { stage: '3. Fair Allocation & NGO Bidding', desc: 'When multiple verified NGOs apply for the same surplus food batch, donors transparently select based on justification and beneficiary count.' },
+      { stage: '4. Real-Time Socket.IO Chat & Dispatch', desc: 'Direct private messaging channels for each request and donation to coordinate vehicle gates, delivery landmarks, and precise timing.' },
+      { stage: '5. Transparent Proof of Impact & Ledger', desc: 'Photographic verification and immutable delivery timestamps give donors 100% confidence that their aid reached genuine beneficiaries.' }
     ],
     features: [
-      'Multi-role Role-Based Access Control (RBAC) for Donors, NGOs, Beneficiaries, and Admins',
-      'Real-time essential item request feed with categorical filters (Food, Clothing, Books, Health)',
-      'End-to-end logistics fulfillment tracker with milestone timestamps',
-      'Normalized relational database schema (Users, Requests, Pledges, FulfillmentLogs)',
-      'Responsive, high-performance user interface built with React 19, TypeScript, and Tailwind CSS',
-      'Verification workflow for NGO credibility to prevent fraudulent requests'
+      '100% Vetted NGO Network: Strict admin audit of 80G certificates & govt registrations before coordinating aid',
+      'Hotel & Banquet Surplus Engine: Automated recurring food collection with zero hassle for restaurants & kitchens',
+      'Real-Time Socket.IO Chat: Direct private messaging channels for each request to coordinate vehicle gates & timing',
+      'Instant Push Broadcasts: Emergency medical or disaster relief requests broadcasted to hundreds of donors simultaneously',
+      'Fair Allocation Bidding: Transparent NGO selection based on justification and verified beneficiary count',
+      'Transparent Proof of Impact: Photographic delivery verification and timestamped receipts logged in DBMS'
     ],
-    techStack: ['React', 'TypeScript', 'Tailwind CSS', 'Vite', 'Node.js / Express', 'DBMS (Relational SQL)', 'Lucide Icons'],
+    techStack: ['React', 'TypeScript', 'Tailwind CSS', 'Vite', 'Socket.IO', 'Node.js / Express', 'DBMS (Relational SQL)', 'Lucide Icons'],
     githubUrl: 'https://github.com/aman-narnolia/Portfolio2',
     liveUrl: '#'
   },
@@ -636,6 +638,7 @@ const AnimatedSkillBadge = ({ name, icon }: { name: string; icon?: React.ReactNo
 // --- Main App Component ---
 export default function App() {
   const [activeProject, setActiveProject] = useState<ProjectItem | null>(null);
+  const [modalImgIndex, setModalImgIndex] = useState(0);
   const [activeCertificate, setActiveCertificate] = useState<CertificateItem | null>(null);
   const [certFilter, setCertFilter] = useState<'all' | 'infosys' | 'competitions'>('all');
   const [isCvOpen, setIsCvOpen] = useState(false);
@@ -1275,7 +1278,7 @@ export default function App() {
               <motion.div
                 key={project.id}
                 whileHover={{ y: -8, boxShadow: "0 24px 48px -15px rgba(0,0,0,0.12)" }}
-                onClick={() => setActiveProject(project)}
+                onClick={() => { setActiveProject(project); setModalImgIndex(0); }}
                 className="bg-white rounded-3xl overflow-hidden border border-stone-200/90 shadow-2xs cursor-pointer group transition-all flex flex-col"
               >
                 {/* Project Image */}
@@ -1283,7 +1286,7 @@ export default function App() {
                   <img 
                     src={project.image} 
                     alt={project.title} 
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-600"
+                    className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-600"
                     onError={(e) => {
                       (e.target as HTMLImageElement).src = "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1000&auto=format&fit=crop";
                     }}
@@ -1318,7 +1321,7 @@ export default function App() {
                     </p>
                   </div>
 
-                  <div className="pt-4 border-t border-stone-100 flex items-center justify-between text-xs text-accent font-bold uppercase tracking-wider">
+                  <div className="pt-4 border-t border-stone-100 flex items-center justify-between text-accent text-xs font-bold uppercase tracking-wider">
                     <span>Click for circuit, workflow & architecture</span>
                     <ExternalLink size={14} />
                   </div>
@@ -1329,8 +1332,8 @@ export default function App() {
         </motion.div>
       </section>
 
-      {/* 7. CONTACT SECTION (With Phone Number: 9653874118) */}
-      <section id="contact" className="py-24 px-6 bg-stone-50/50">
+      {/* 7. CONTACT SECTION */}
+      <section id="contact" className="py-24 px-6 bg-background-natural">
         <motion.div 
           className="max-w-7xl mx-auto"
           initial={{ opacity: 0 }}
@@ -1427,7 +1430,7 @@ export default function App() {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.9 }}
             onClick={scrollToTop}
-            className="fixed bottom-6 right-6 z-40 p-3 bg-accent text-white rounded-full shadow-lg hover:bg-stone-800 transition-colors cursor-pointer"
+            className="fixed bottom-6 right-6 z-40 p-3 bg-accent text-white rounded-full shadow-lg hover:bg-accent-light transition-colors cursor-pointer"
             aria-label="Scroll to top"
           >
             <ChevronUp size={20} />
@@ -1455,16 +1458,36 @@ export default function App() {
               exit={{ opacity: 0, scale: 0.95, y: 20 }}
               className="relative w-full max-w-3xl bg-white rounded-3xl shadow-2xl overflow-hidden z-10 my-8 max-h-[92vh] flex flex-col"
             >
-              {/* Header Image / Banner */}
-              <div className="relative aspect-[16/7] bg-stone-100 overflow-hidden shrink-0">
+              {/* Header Image / Banner with Gallery Switcher */}
+              <div className="relative aspect-[16/8] bg-stone-100 overflow-hidden shrink-0 border-b border-stone-200">
                 <img 
-                  src={activeProject.image} 
+                  src={activeProject.gallery && activeProject.gallery.length > 0 ? activeProject.gallery[modalImgIndex] : activeProject.image} 
                   alt={activeProject.title} 
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover object-top transition-all duration-300"
                 />
+                
+                {/* Gallery Tab Switcher inside Modal Header if multiple screenshots exist */}
+                {activeProject.gallery && activeProject.gallery.length > 1 && (
+                  <div className="absolute bottom-3 left-4 flex space-x-2 bg-stone-950/75 p-1.5 rounded-xl backdrop-blur-xs">
+                    {activeProject.gallery.map((img, idx) => (
+                      <button
+                        key={idx}
+                        onClick={() => setModalImgIndex(idx)}
+                        className={`text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-lg transition-all cursor-pointer ${
+                          modalImgIndex === idx 
+                            ? 'bg-accent text-white shadow-xs' 
+                            : 'text-stone-300 hover:text-white hover:bg-white/10'
+                        }`}
+                      >
+                        {idx === 0 ? 'Landing View' : 'Capabilities & Trust'}
+                      </button>
+                    ))}
+                  </div>
+                )}
+
                 <button
                   onClick={() => setActiveProject(null)}
-                  className="absolute top-4 right-4 w-9 h-9 bg-stone-900/70 hover:bg-stone-900 text-white rounded-full flex items-center justify-center transition-all cursor-pointer"
+                  className="absolute top-4 right-4 w-9 h-9 bg-stone-900/70 hover:bg-stone-900 text-white rounded-full flex items-center justify-center transition-all cursor-pointer shadow-md"
                 >
                   <X size={18} />
                 </button>
@@ -1503,6 +1526,29 @@ export default function App() {
                     {activeProject.fullDesc}
                   </p>
                 </div>
+
+                {/* Platform Screenshots Gallery (if multiple images exist) */}
+                {activeProject.gallery && activeProject.gallery.length > 1 && (
+                  <div>
+                    <h4 className="text-xs uppercase tracking-wider font-bold text-stone-400 mb-3 flex items-center space-x-1.5">
+                      <Eye size={14} className="text-accent" />
+                      <span>Platform Interface & UI Screenshots</span>
+                    </h4>
+                    <div className="grid grid-cols-2 gap-3">
+                      {activeProject.gallery.map((img, idx) => (
+                        <div 
+                          key={idx}
+                          onClick={() => setModalImgIndex(idx)}
+                          className={`aspect-[16/9] rounded-xl overflow-hidden border-2 cursor-pointer transition-all ${
+                            modalImgIndex === idx ? 'border-accent shadow-md scale-[1.02]' : 'border-stone-200 opacity-70 hover:opacity-100'
+                          }`}
+                        >
+                          <img src={img} alt={`Screenshot ${idx + 1}`} className="w-full h-full object-cover object-top" />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
 
                 {/* 5-Stage System Workflow (if available) */}
                 {activeProject.workflow && (
