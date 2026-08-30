@@ -87,21 +87,29 @@ interface CertificateItem {
 const projectsData: ProjectItem[] = [
   {
     id: 'ngo-platform',
-    title: 'NGO Donation Platform',
-    subtitle: 'Full-Stack Community Support System',
+    title: 'Helping Hands — Direct Community Aid & NGO Donation Platform',
+    subtitle: 'Full-Stack Multi-Role Donation & Real-Time Logistics Tracking System',
     image: 'https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?q=80&w=1000&auto=format&fit=crop',
-    tags: ['React', 'TypeScript', 'Tailwind CSS', 'DBMS'],
-    shortDesc: 'A web platform designed to bridge the gap between donors and underprivileged communities with transparent item donation tracking.',
-    fullDesc: 'The NGO Donation Platform (Helping Hands / Helping Connect) connects donors directly with verified NGOs and needy individuals. The platform enables multi-role access (Donors, NGOs, Needy, and Administrators) to request essentials, track fulfillment in real-time, and eliminate intermediaries for maximum social impact.',
-    features: [
-      'Multi-role authentication for Donors, NGOs, Needy individuals, and Admins',
-      'Real-time item donation tracking from pledge to delivery',
-      'Interactive request feed with categories for food, clothing, and books',
-      'Responsive dashboard interface built with React & Tailwind CSS',
-      'Structured relational database schema for transparent logging'
+    tags: ['React', 'TypeScript', 'Tailwind CSS', 'DBMS', 'Node.js', 'REST API'],
+    shortDesc: 'A web platform bridging the gap between donors, verified NGOs, and underprivileged communities with transparent item donation matching and delivery tracking.',
+    fullDesc: 'Traditional charitable donation workflows frequently suffer from a lack of transparency, high administrative friction, and the presence of unverified intermediaries that diminish donor trust. Helping Hands is a centralized full-stack donation management web platform engineered to connect donors directly with verified grassroots NGOs and individuals in need. The system implements multi-role RBAC (Role-Based Access Control) for Donors, NGOs, Beneficiaries, and Administrators, enabling real-time essential item requests (food grains, clothes, educational stationery, medical supplies), direct item pledging, logistics milestone tracking, and transparent DBMS ledger logging.',
+    workflow: [
+      { stage: '1. Multi-Tier Role Authentication', desc: 'Secure sign-in with distinct role portals: Donors, Verified NGOs, Needy Individuals, and System Administrators.' },
+      { stage: '2. Needs Requirement Posting', desc: 'Beneficiaries and local NGOs publish structured requirement listings with item categories, urgency levels (Urgent / Standard), and geographic location.' },
+      { stage: '3. Direct Donor Matching & Pledging', desc: 'Donors browse live request feeds, filter by category/location, and pledge items directly without financial cuts or middlemen.' },
+      { stage: '4. Real-Time Logistics & Fulfillment Status', desc: 'Step-by-step milestone progression tracking from "Pledged" ➔ "Collected by NGO" ➔ "In Transit" ➔ "Delivered to Beneficiary".' },
+      { stage: '5. Transparent DBMS Audit Logging', desc: 'Immutable transaction logs, verification proofs, and donor impact badges recorded to maintain 100% community trust.' }
     ],
-    techStack: ['React', 'TypeScript', 'Tailwind CSS', 'Vite', 'Node.js / Express (Planned)', 'DBMS'],
-    githubUrl: 'https://github.com/aman-narnolia/Portfolio',
+    features: [
+      'Multi-role Role-Based Access Control (RBAC) for Donors, NGOs, Beneficiaries, and Admins',
+      'Real-time essential item request feed with categorical filters (Food, Clothing, Books, Health)',
+      'End-to-end logistics fulfillment tracker with milestone timestamps',
+      'Normalized relational database schema (Users, Requests, Pledges, FulfillmentLogs)',
+      'Responsive, high-performance user interface built with React 19, TypeScript, and Tailwind CSS',
+      'Verification workflow for NGO credibility to prevent fraudulent requests'
+    ],
+    techStack: ['React', 'TypeScript', 'Tailwind CSS', 'Vite', 'Node.js / Express', 'DBMS (Relational SQL)', 'Lucide Icons'],
+    githubUrl: 'https://github.com/aman-narnolia/Portfolio2',
     liveUrl: '#'
   },
   {
