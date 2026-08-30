@@ -112,7 +112,7 @@ const projectsData: ProjectItem[] = [
     ],
     techStack: ['React', 'TypeScript', 'Tailwind CSS', 'Vite', 'Socket.IO', 'Node.js / Express', 'DBMS (Relational SQL)', 'Lucide Icons'],
     githubUrl: 'https://github.com/aman-narnolia/Portfolio2',
-    liveUrl: '#'
+    liveUrl: 'https://helping-hands-6gw09vcnz-aman-narnolias-projects.vercel.app/'
   },
   {
     id: 'pollution-monitor',

@@ -92,13 +92,15 @@ Portfolio2/
 
 ---
 
-### 2. 🤝 NGO Donation Platform (Helping Connect)
-* **Category:** Full-Stack Web Development & DBMS
-* **Stack:** React, TypeScript, Tailwind CSS, Vite, DBMS schema.
+### 2. 🤝 Helping Connect — Closed-Loop Relief & Surplus Food Matching Network
+* **Live Deployment:** [helping-hands-6gw09vcnz-aman-narnolias-projects.vercel.app](https://helping-hands-6gw09vcnz-aman-narnolias-projects.vercel.app/)
+* **Category:** Full-Stack Web Development & Real-Time Logistics
+* **Stack:** React, TypeScript, Tailwind CSS, Socket.IO, Node.js / Express, DBMS.
 * **Highlights:**
-  * Multi-role authentication for Donors, verified NGOs, needy individuals, and administrators.
-  * Real-time transparent item donation tracking from pledge to doorstep delivery.
-  * Category-based request feeds (food, clothing, educational supplies) eliminating third-party intermediaries.
+  * Multi-portal RBAC for Donors, Hotels/Messes, Needy Beneficiaries, and 100% Vetted NGOs.
+  * Real-time Socket.IO chat for instant vehicle gate delivery coordination.
+  * Automated surplus food collection engine rescuing restaurant/banquet meals.
+  * Photographic delivery verification with immutable timestamps.
 
 ---
 
